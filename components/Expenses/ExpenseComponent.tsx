@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   },
   textHead: {
     fontSize: 15,
-    color: "grey",
+    color: "black",
+    fontFamily: "JakaraExtraBold"
    
   },
 });

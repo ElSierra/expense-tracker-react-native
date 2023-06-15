@@ -74,12 +74,13 @@ const style = StyleSheet.create({
   headerLeft: {
     fontSize: 15,
     color: "white",
+    fontFamily: "RobotoMedium"
    
   },
   money: {
     fontSize: 40,
     color: "white",
-    fontFamily: "PantonExtraBold"
+    fontFamily: "RobotoBold"
    
   },
   headerRight: {},

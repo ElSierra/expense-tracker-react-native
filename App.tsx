@@ -13,6 +13,10 @@ SplashScreen.preventAutoHideAsync();
 export default function Main() {
   const [fontsLoaded] = useFonts({
     PantonExtraBold: require("./assets/fonts/Panton.ttf"),
+    JakaraExtraBold: require("./assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
+    JakaraSemiBold: require("./assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+    RobotoMedium: require("./assets/fonts/Roboto-Medium.ttf"),
+    RobotoBold: require("./assets/fonts/Roboto-Bold.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {

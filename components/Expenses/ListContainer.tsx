@@ -63,18 +63,19 @@ const styles = StyleSheet.create({
   leftSide: {
     flexDirection: "row",
     alignItems: "center",
+    
   },
   costName: {
     marginLeft: 10,
   },
   textHead: {
-    fontWeight: "800",
     fontSize: 16,
+    fontFamily: "JakaraExtraBold"
   },
   textFoot: {
-    fontWeight: "600",
     fontSize: 14,
     color: "#606060",
+    fontFamily: "JakaraExtraBold"
   },
   rightSide: {},
 });

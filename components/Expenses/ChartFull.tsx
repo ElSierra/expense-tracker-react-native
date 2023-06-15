@@ -5,44 +5,43 @@ import { FadeInView } from "../FadeInView";
 
 export default function ChartFull() {
   return (
-    <FadeInView style={{flex:1}}>
-  
-      <GestureHandlerRootView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <LineChart
-       data={{
-        labels: [
-         "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        datasets: [
-          {
-            data: [500, 200, 800, 400, 600, 600, 900],
-          },
-        ],
-      }}
+        data={{
+          labels: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          datasets: [
+            {
+              data: [500, 200, 800, 400, 600, 600, 900,500, 200, 800, 400, 600,],
+            },
+          ],
+        }}
         width={Dimensions.get("window").width - 50} // from react-native
         height={220}
-        yAxisLabel="$"
+        yAxisLabel="₦"
         yAxisSuffix="k"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
-          backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
-          decimalPlaces: 2, // optional, defaults to 2dp
+          backgroundColor: "#000000",
+          backgroundGradientFrom: "#00000000",
+          backgroundGradientTo: "#00000000",
+          decimalPlaces:0, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
+            
             borderRadius: 16,
           },
           propsForDots: {
@@ -56,7 +55,7 @@ export default function ChartFull() {
           marginVertical: 8,
           borderRadius: 16,
         }}
-      /></GestureHandlerRootView>
-    </FadeInView>
+      />
+    </View>
   );
 }

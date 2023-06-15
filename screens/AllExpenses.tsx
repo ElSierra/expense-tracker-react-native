@@ -11,6 +11,9 @@ import { useFocusEffect } from "@react-navigation/native";
 export default function AllExpenses() {
   return (
     <View style={styles.root}>
+      <View style={styles.allExpensesContainer}>
+        <Text style={styles.allExpensesText}>All Expenses</Text>
+      </View>
       <View style={styles.main}>
         <ExpenseComponent
           expenses={EXPENSE_DATA}
@@ -29,4 +32,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
   },
+  allExpensesContainer: {
+    marginTop: 30,
+  },
+  allExpensesText:{
+    fontFamily: "JakaraExtraBold",
+    fontSize:30
+  }
 });

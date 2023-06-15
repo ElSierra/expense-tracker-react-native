@@ -14,7 +14,7 @@ export default function AddNewExpenseButton({
   return (
     <View style={style.touchable}>
       <TouchableRipple onPress={onPress}>
-        <AddIcon color={"#580000"} size={50} />
+        <AddIcon color={"#580000"} size={40} />
       </TouchableRipple>
     </View>
   );
@@ -23,9 +23,9 @@ export default function AddNewExpenseButton({
 const style = StyleSheet.create({
   touchable: {
     borderRadius: 12,
-    height: 50,
+    height: 40,
     padding: 0,
-    marginTop: 10,
+    marginRight: 10,
     backgroundColor: "#00000016",
     overflow: "hidden",
   },

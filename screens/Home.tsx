@@ -22,6 +22,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    marginTop:40,
   },
   moneyContainer: {
     alignItems: "center",
