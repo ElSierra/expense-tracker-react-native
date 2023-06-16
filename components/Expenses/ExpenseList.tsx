@@ -12,8 +12,9 @@ export default function ExpenseList({
   ListHeaderComponent?: JSX.Element;
 }) {
   return (
-    <View style={{flex:1}}>
-      <FlatList
+    <View style={{ flex: 1 }}>
+      <FlashList
+        estimatedItemSize={20}
         data={expenses}
         ListHeaderComponent={ListHeaderComponent}
         showsVerticalScrollIndicator={false}

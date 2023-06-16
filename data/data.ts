@@ -15,4 +15,5 @@ export const EXPENSE_DATA = [
   new Expenses("5", "Others", "Flenjo", 50000, "Friday", new Date("2023-4-7")),
   new Expenses("6", "Food", "Food", 5000, "Monday, ", new Date("2023-4-21")),
   new Expenses("7", "Food", "Food", 5000, "Monday", new Date("2023-4-23")),
+  new Expenses("8", "Food", "Food", 50000, "Monday", new Date("2023-6-15")),
 ];

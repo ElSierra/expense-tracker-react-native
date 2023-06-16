@@ -34,7 +34,6 @@ function BottomTabNavigator() {
           },
           tabBarAndroidRipple: { color: "#FFDDDD",borderless: true,},
           tabBarShowLabel: false,
-          lazy: true,
           tabBarActiveTintColor: "black",
           tabBarStyle: {
             height: 70,

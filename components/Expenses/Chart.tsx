@@ -55,9 +55,9 @@ export default function Chart({
         }}
         bezier
         style={{
-          paddingLeft: 40,
-          borderRadius: 16,
-          paddingRight: 40,
+          paddingLeft: 0,
+          borderRadius: 100,
+          paddingRight: 25,
         }}
       />
     </View>

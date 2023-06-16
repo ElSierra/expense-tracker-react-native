@@ -1,9 +1,15 @@
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BackgroundSvg } from "../assets/Svg/background";
 import {} from "react-native-svg";
 import { FadeInView } from "../components/FadeInView";
-import AnalyticsCard from "../components/AnalyticsCard";
+import AnalyticsCard from "../components/Card/AnalyticsCard";
 import { BottomSheetContainer } from "../components/BottomSheet";
 import ExpenseComponent from "../components/Expenses/ExpenseComponent";
 import { EXPENSE_DATA } from "../data/data";
@@ -11,7 +17,9 @@ import { EXPENSE_DATA } from "../data/data";
 export default function Home() {
   return (
     <View style={styles.root}>
-      <AnalyticsCard />
+      <View>
+        <AnalyticsCard />
+      </View>
       <View style={styles.root}>
         <ExpenseComponent expenses={EXPENSE_DATA} periodName="Last 7 days" />
       </View>
@@ -22,7 +30,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    marginTop:40,
+    marginTop: 40,
   },
   moneyContainer: {
     alignItems: "center",

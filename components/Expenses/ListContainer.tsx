@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { Expenses } from "../../data/model";
+import { getFormatDate } from "../../util/date";
 
 export default function ListContainer({ expense }: { expense: Expenses }) {
   function renderEmoji() {
@@ -28,7 +29,7 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
         </View>
         <View style={styles.costName}>
           <Text style={styles.textHead}>{expense.name}</Text>
-          <Text style={styles.textFoot}>{expense.day}</Text>
+          <Text style={styles.textFoot}>{getFormatDate(expense.date)}</Text>
         </View>
       </View>
 
