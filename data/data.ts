@@ -1,19 +1,509 @@
 import { Expenses } from "./model";
+import uuid from "react-native-uuid";
 
 export const EXPENSE_DATA = [
-  new Expenses("1", "Food", "Food", 500.1, "Monday", new Date("2023-4-3")),
-  new Expenses("2", "Internet", "MTN", 5000, "Tuesday", new Date("2023-4-4")),
   new Expenses(
-    "3",
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
     "Transport",
     "Transport",
     5000,
-    "Wednesday",
     new Date("2023-4-5")
   ),
-  new Expenses("4", "Movie", "Fast X", 10000, "Thursday", new Date("2023-4-5")),
-  new Expenses("5", "Others", "Flenjo", 50000, "Friday", new Date("2023-4-7")),
-  new Expenses("6", "Food", "Food", 5000, "Monday, ", new Date("2023-4-21")),
-  new Expenses("7", "Food", "Food", 5000, "Monday", new Date("2023-4-23")),
-  new Expenses("8", "Food", "Food", 50000, "Monday", new Date("2023-6-15")),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    500.1,
+    new Date("2023-4-3")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Internet",
+    "MTN",
+    5000,
+    new Date("2023-4-4")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Transport",
+    "Transport",
+    5000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Movie",
+    "Fast X",
+    10000,
+    new Date("2023-4-5")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Others",
+    "Flenjo",
+    50000,
+    new Date("2023-4-7")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-21")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    5000,
+    new Date("2023-4-23")
+  ),
+  new Expenses(
+    uuid.v4().toString(),
+    "Food",
+    "Food",
+    50000,
+    new Date("2023-6-15")
+  ),
 ];

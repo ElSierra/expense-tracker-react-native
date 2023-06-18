@@ -8,6 +8,8 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { useCallback } from "react";
 import { View, Text } from "react-native";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 SplashScreen.preventAutoHideAsync();
 export default function Main() {
@@ -26,18 +28,16 @@ export default function Main() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
-    return (
-      <View>
-        <Text style={{ color: "red", fontSize: 300 }}>No fonts loaded</Text>
-      </View>
-    );
+    return null;
   }
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <PaperProvider>
         <StatusBar animated={true} style="dark" backgroundColor="transparent" />
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </PaperProvider>
     </NavigationContainer>
   );

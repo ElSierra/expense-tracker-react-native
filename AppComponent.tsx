@@ -4,12 +4,14 @@ import AllExpenses from "./screens/AllExpenses";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home";
-import AddNewExpenseButton from "./components/AddNewExpenseButton";
+import AddNewExpenseButton from "./components/UI/AddNewExpenseButton";
 import { CalendarIcon, HomeIcon } from "./components/icons";
 import { BottomSheetContainer } from "./components/BottomSheet";
 import { useCallback, useRef } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useAppDispatch } from "./redux/hooks/hooks";
+import { openModalAdd } from "./redux/slice/modalSlice";
 const Stack = createNativeStackNavigator();
 // const Tab = createBottomTabNavigator();
 
@@ -32,7 +34,7 @@ function BottomTabNavigator() {
           tabBarIndicatorStyle: {
             backgroundColor: "transparent",
           },
-          tabBarAndroidRipple: { color: "#FFDDDD",borderless: true,},
+          tabBarAndroidRipple: { color: "#FFDDDD", borderless: true },
           tabBarShowLabel: false,
           tabBarActiveTintColor: "black",
           tabBarStyle: {
@@ -79,12 +81,10 @@ function BottomTabNavigator() {
 }
 
 export default function App() {
-  const sheetRef = useRef<BottomSheet>(null);
-  const handleSnapPress = useCallback((index: any) => {
-    sheetRef.current?.snapToIndex(index);
-  }, []);
+  const dispatch = useAppDispatch();
+
   return (
-    <BottomSheetContainer sheetRef={sheetRef}>
+    <BottomSheetContainer>
       <Stack.Navigator
         screenOptions={{ contentStyle: { backgroundColor: "#00000000" } }}
       >
@@ -99,7 +99,7 @@ export default function App() {
                 pressColor={tintColor}
                 tintColor={tintColor}
                 onPress={() => {
-                  handleSnapPress(2);
+                  dispatch(openModalAdd());
                 }}
               />
             ),

@@ -27,7 +27,7 @@ export default function AnalyticsCard() {
         horizontal
         showsHorizontalScrollIndicator={false}
         decelerationRate={0}
-        snapToInterval={width - 40} //your element width
+        snapToInterval={width * 0.9} //your element width
         snapToAlignment={"center"}
       >
         <Card />
@@ -46,7 +46,7 @@ const style = StyleSheet.create({
   },
   backBox: {
     height: 200,
-    width: "100%",
+    width: "90%",
     position: "absolute",
     marginTop: 60,
     borderRadius: 20,

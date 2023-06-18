@@ -11,13 +11,11 @@ export default function Card() {
       style={style.frontBox}
       source={require("../../assets/images/box-cut.png")}
     >
-      <View style={style.cardContent}>
-        <Text style={style.headerLeft}>Total Spent For the month of June</Text>
-        <View style={style.headerRight}></View>
-      </View>
+      <Text style={style.header}>Total Spent For the month of June</Text>
+
       <Text style={style.money}>₦50,000</Text>
-      <View style={style.chartContainer}>
-        <Chart height={100} width={width - 80} withHorizontalLabels={false} />
+      <View style={[style.chartContainer, { width: width * 0.75 }]}>
+        <Chart height={100} width={width * 0.7} withHorizontalLabels={false} />
       </View>
     </ImageBackground>
   );
@@ -29,37 +27,39 @@ const style = StyleSheet.create({
     alignItems: "center",
   },
   chartContainer: {
-    width: "100%",
-    marginTop: 15,
+    marginTop: 10,
     height: 100,
+    overflow: "hidden",
     marginLeft: 20,
     justifyContent: "center",
     alignItems: "center",
   },
- 
+
   frontBox: {
     height: 210,
-
+    overflow: "hidden",
     aspectRatio: 6442 / 3771,
     padding: 20,
     marginTop: 50,
   },
   cardContent: {
     height: 16,
+    width: "100%",
+    backgroundColor: "red",
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  headerLeft: {
+  header: {
     fontSize: 15,
-
+    textAlign: "center",
     color: "white",
     fontFamily: "RobotoMedium",
   },
   money: {
     fontSize: 40,
     color: "white",
-    paddingHorizontal: 20,
+    textAlign: "center",
     fontFamily: "RobotoBold",
   },
   headerRight: {},

@@ -13,15 +13,23 @@ import AnalyticsCard from "../components/Card/AnalyticsCard";
 import { BottomSheetContainer } from "../components/BottomSheet";
 import ExpenseComponent from "../components/Expenses/ExpenseComponent";
 import { EXPENSE_DATA } from "../data/data";
+import { useAppSelector } from "../redux/hooks/hooks";
+import { getLessThanDate } from "../util/date";
 
 export default function Home() {
+  const expenseList = useAppSelector((state) => state.expense.expenses);
+  const recentExpenses = expenseList.filter((expense) => {
+    const today = new Date();
+    const date7DaysAgo = getLessThanDate(today, 7);
+    return expense.date > date7DaysAgo;
+  });
   return (
     <View style={styles.root}>
       <View>
         <AnalyticsCard />
       </View>
       <View style={styles.root}>
-        <ExpenseComponent expenses={EXPENSE_DATA} periodName="Last 7 days" />
+        <ExpenseComponent expenses={recentExpenses} periodName="Last 7 days" />
       </View>
     </View>
   );

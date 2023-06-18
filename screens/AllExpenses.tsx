@@ -1,14 +1,12 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { BottomSheetContainer } from "../components/BottomSheet";
-import { FadeInView } from "../components/FadeInView";
-import ChartTest from "../components/Expenses/Chart";
+
 import ExpenseComponent from "../components/Expenses/ExpenseComponent";
 import { EXPENSE_DATA } from "../data/data";
 import ChartFull from "../components/Expenses/ChartFull";
-import { useCallback, useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import { useAppSelector } from "../redux/hooks/hooks";
 
 export default function AllExpenses() {
+  
   return (
     <View style={styles.root}>
       <View style={styles.allExpensesContainer}>

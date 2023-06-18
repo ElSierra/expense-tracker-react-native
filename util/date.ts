@@ -15,3 +15,9 @@ export function getFormatDate(date: Date): string {
   }
   return formatDistance(date, new Date(), { addSuffix: true });
 }
+
+
+export function getLessThanDate(date: Date, days: number){
+
+ return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days)
+}
