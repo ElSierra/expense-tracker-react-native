@@ -6,7 +6,7 @@ import ChartFull from "../components/Expenses/ChartFull";
 import { useAppSelector } from "../redux/hooks/hooks";
 
 export default function AllExpenses() {
-  
+  const expensesList = useAppSelector((state) => state.expense.expenses);
   return (
     <View style={styles.root}>
       <View style={styles.allExpensesContainer}>
@@ -14,7 +14,7 @@ export default function AllExpenses() {
       </View>
       <View style={styles.main}>
         <ExpenseComponent
-          expenses={EXPENSE_DATA}
+          expenses={expensesList}
           periodName="Total"
           ListHeaderComponent={<ChartFull />}
         />
@@ -32,9 +32,15 @@ const styles = StyleSheet.create({
   },
   allExpensesContainer: {
     marginTop: 30,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    includeFontPadding: false,
   },
-  allExpensesText:{
+  allExpensesText: {
+    textAlign: "center",
+
     fontFamily: "JakaraExtraBold",
-    fontSize:30
-  }
+    fontSize: 20,
+  },
 });

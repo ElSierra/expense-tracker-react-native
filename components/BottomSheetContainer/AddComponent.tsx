@@ -5,13 +5,15 @@ import HeaderTextClose from "../UI/HeaderTextClose";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
 
-export default function EditComponent() {
+export default function AddComponent() {
   const modalState = useAppSelector((state) => state.modal);
-  console.log(modalState.id);
+
+
   return (
     <View style={styles.screen}>
-      <HeaderTextClose header="Edit" />
+      <HeaderTextClose header="Add" />
       <View style={{ flex: 1 }}></View>
+    
     </View>
   );
 }

@@ -1,14 +1,26 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { View, Text, StyleSheet, Pressable, BackHandler } from "react-native";
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetFooter,
+} from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import CustomBackground from "./CustomBg";
-import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
-import { closeModal } from "../redux/slice/modalSlice";
-import IconButton from "./UI/IconButton";
-import { AddIcon, CloseCircleIcon } from "./icons";
-import EditComponent from "./BottomSheetContainer/EditComponent";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
+import { closeModal } from "../../redux/slice/modalSlice";
+import IconButton from "../UI/IconButton";
+import { AddIcon, CloseCircleIcon } from "../icons";
+import EditComponent from "../BottomSheetContainer/EditComponent";
+import EditButtons from "../UI/EditButtons";
+import AddButtons from "../UI/AddButtons";
+import AddComponent from "../BottomSheetContainer/AddComponent";
 
 export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
   const ModalState = useAppSelector((state) => state.modal);
@@ -56,7 +68,7 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
   );
   useEffect(() => {
     const backAction = () => {
-     sheetRef.current?.close()
+      sheetRef.current?.close();
       return true;
     };
 
@@ -66,7 +78,29 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
     );
 
     return () => backHandler.remove();
-    }, []);
+  }, []);
+
+  const renderFooterEdit = (props: any) => {
+    console.log("isEdit", isEditing);
+    return (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View style={styles.footerContainer}>
+          {!isEditing ? <AddButtons /> : <EditButtons />}
+        </View>
+      </BottomSheetFooter>
+    );
+  };
+
+  const renderFooterAdd = useCallback(
+    (props: any) => (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View style={styles.footerContainer}>
+          <AddButtons />
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -74,6 +108,7 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
 
         <BottomSheet
           ref={sheetRef}
+          footerComponent={renderFooterEdit}
           handleIndicatorStyle={{ display: "none" }}
           index={-1}
           enablePanDownToClose
@@ -103,7 +138,7 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
               }}
             >
               <View style={styles.contentContainer}>
-                {isEditing ? <EditComponent /> : null}
+                {isEditing ? <EditComponent /> : <AddComponent />}
               </View>
             </View>
           </View>
@@ -134,5 +169,16 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: "100%",
     height: "100%",
+  },
+  footerContainer: {
+    padding: 12,
+    margin: 12,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  footerText: {
+    textAlign: "center",
+    color: "white",
+    fontWeight: "800",
   },
 });

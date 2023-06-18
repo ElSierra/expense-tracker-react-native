@@ -6,12 +6,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home";
 import AddNewExpenseButton from "./components/UI/AddNewExpenseButton";
 import { CalendarIcon, HomeIcon } from "./components/icons";
-import { BottomSheetContainer } from "./components/BottomSheet";
+import { BottomSheetContainer } from "./components/BottomSheet/BottomSheet";
 import { useCallback, useRef } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useAppDispatch } from "./redux/hooks/hooks";
 import { openModalAdd } from "./redux/slice/modalSlice";
+import { Avatar } from "react-native-paper";
 const Stack = createNativeStackNavigator();
 // const Tab = createBottomTabNavigator();
 
@@ -94,6 +95,9 @@ export default function App() {
           options={{
             headerShown: true,
             headerTitle: "",
+            headerLeft: ({})=>(
+              <Avatar.Image size={40} source={require('./assets/images/placeholder.png')} />
+            ),
             headerRight: ({ tintColor }) => (
               <AddNewExpenseButton
                 pressColor={tintColor}

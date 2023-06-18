@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from "react-native";
 
 import ExpenseList from "./ExpenseList";
 import { Expenses } from "../../data/model";
+import EmptyLottie from "../UI/EmptyLottie";
 export default function ExpenseComponent({
   expenses,
   periodName,
@@ -24,10 +25,14 @@ export default function ExpenseComponent({
         <Text style={styles.textHead}>{periodName}</Text>
         <Text style={styles.textHead}>{formattedExpenseSum}</Text>
       </View>
-      <ExpenseList
-        expenses={expenses}
-        ListHeaderComponent={ListHeaderComponent}
-      />
+      {expenses.length > 0 ? (
+        <ExpenseList
+          expenses={expenses}
+          ListHeaderComponent={ListHeaderComponent}
+        />
+      ) : (
+        <EmptyLottie />
+      )}
     </View>
   );
 }
@@ -48,7 +53,6 @@ const styles = StyleSheet.create({
   textHead: {
     fontSize: 15,
     color: "black",
-    fontFamily: "JakaraExtraBold"
-   
+    fontFamily: "JakaraExtraBold",
   },
 });

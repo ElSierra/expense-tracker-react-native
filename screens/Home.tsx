@@ -1,18 +1,14 @@
 import {
   View,
-  Text,
+ 
   StyleSheet,
-  ImageBackground,
-  ScrollView,
+
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { BackgroundSvg } from "../assets/Svg/background";
-import {} from "react-native-svg";
-import { FadeInView } from "../components/FadeInView";
+
 import AnalyticsCard from "../components/Card/AnalyticsCard";
-import { BottomSheetContainer } from "../components/BottomSheet";
+
 import ExpenseComponent from "../components/Expenses/ExpenseComponent";
-import { EXPENSE_DATA } from "../data/data";
+
 import { useAppSelector } from "../redux/hooks/hooks";
 import { getLessThanDate } from "../util/date";
 
