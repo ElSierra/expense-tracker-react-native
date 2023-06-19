@@ -41,13 +41,22 @@ const expenseSlice = createSlice({
       );
 
       const updatableExpense = state.expenses[expenseIndex];
+      console.log(
+        "🚀 ~ file: expenseSlice.tsx:44 ~ updatableExpense:",
+        updatableExpense
+      );
       const updatedItem = { ...updatableExpense, ...action.payload.expense };
-      const updatedExpenses = [...state.expenses];
-      updatedExpenses[expenseIndex] = updatedItem;
+      console.log("🚀 ~ file: expenseSlice.tsx:46 ~ updatedItem:", updatedItem);
+
+      state.expenses[expenseIndex] = updatedItem;
+    },
+    doNothing: (state) => {
+      const expList = [...state.expenses];
+      state.expenses = expList
     },
   },
 });
 
-export const { addExpense, deleteExpense, updateExpense } =
+export const { addExpense, deleteExpense, updateExpense, doNothing } =
   expenseSlice.actions;
 export default expenseSlice.reducer;

@@ -14,20 +14,17 @@ import Card from "./Card";
 
 export default function AnalyticsCard() {
   const { height, width } = useWindowDimensions();
-  const [visible, setVisible] = useState(false);
-
-  const openMenu = () => setVisible(true);
-
-  const closeMenu = () => setVisible(false);
+ 
   return (
     <View style={style.root}>
       <View style={style.backBox}></View>
 
       <ScrollView
         horizontal
+        style={{width}}
         showsHorizontalScrollIndicator={false}
         decelerationRate={0}
-        snapToInterval={width * 0.9} //your element width
+        snapToInterval={width} //your element width
         snapToAlignment={"center"}
       >
         <Card />

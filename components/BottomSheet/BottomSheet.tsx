@@ -21,6 +21,7 @@ import EditComponent from "../BottomSheetContainer/EditComponent";
 import EditButtons from "../UI/EditButtons";
 import AddButtons from "../UI/AddButtons";
 import AddComponent from "../BottomSheetContainer/AddComponent";
+import { FadeInView } from "../FadeInView";
 
 export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
   const ModalState = useAppSelector((state) => state.modal);
@@ -38,7 +39,11 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
   }
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    console.log(
+      "🚀 ~ file: BottomSheet.tsx:42 ~ handleSheetChanges ~ index:",
+      index
+    );
+
     if (index === -1) {
       dispatch(closeModal());
     }
@@ -80,8 +85,9 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
     return () => backHandler.remove();
   }, []);
 
-  const renderFooterEdit = (props: any) => {
+  const renderFooter = (props: any) => {
     console.log("isEdit", isEditing);
+    
     return (
       <BottomSheetFooter {...props} bottomInset={24}>
         <View style={styles.footerContainer}>
@@ -91,16 +97,6 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const renderFooterAdd = useCallback(
-    (props: any) => (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={styles.footerContainer}>
-          <AddButtons />
-        </View>
-      </BottomSheetFooter>
-    ),
-    []
-  );
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -108,7 +104,7 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
 
         <BottomSheet
           ref={sheetRef}
-          footerComponent={renderFooterEdit}
+          footerComponent={renderFooter}
           handleIndicatorStyle={{ display: "none" }}
           index={-1}
           enablePanDownToClose
@@ -155,14 +151,15 @@ const styles = StyleSheet.create({
   contentScreen: {
     flex: 1,
     backgroundColor: "white",
-    borderRadius: 25,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     alignItems: "center",
   },
   handleContainer: {
-    width: "12%",
+    width: "22%",
     borderRadius: 20,
     backgroundColor: "#062C032B",
-    height: 6,
+    height: 5,
     marginTop: 10,
   },
 

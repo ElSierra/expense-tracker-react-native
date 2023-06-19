@@ -11,6 +11,7 @@ import ExpenseComponent from "../components/Expenses/ExpenseComponent";
 
 import { useAppSelector } from "../redux/hooks/hooks";
 import { getLessThanDate } from "../util/date";
+import { FadeInView } from "../components/FadeInView";
 
 export default function Home() {
   const expenseList = useAppSelector((state) => state.expense.expenses);
@@ -20,14 +21,14 @@ export default function Home() {
     return expense.date > date7DaysAgo;
   });
   return (
-    <View style={styles.root}>
+    <FadeInView style={styles.root}>
       <View>
         <AnalyticsCard />
       </View>
       <View style={styles.root}>
-        <ExpenseComponent expenses={recentExpenses} periodName="Last 7 days" />
+        <ExpenseComponent expenses={recentExpenses.reverse()} periodName="Last 7 days" />
       </View>
-    </View>
+    </FadeInView>
   );
 }
 

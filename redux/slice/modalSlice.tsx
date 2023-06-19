@@ -24,8 +24,10 @@ const modalSlice = createSlice({
       state.isOpen = false;
       state.id = null;
     },
+  
   },
 });
 
-export const { openModalEdit, closeModal, openModalAdd } = modalSlice.actions;
+export const { openModalEdit, closeModal, openModalAdd, } =
+  modalSlice.actions;
 export default modalSlice.reducer;

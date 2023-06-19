@@ -4,21 +4,20 @@ import { StyleSheet, View } from "react-native";
 import { ReactNode } from "react";
 
 export default function IconButton({
-  pressColor,
-  tintColor,
+ 
   size,
   onPress,
   children,
+  radius,
 }: {
-  pressColor: string | undefined;
-  tintColor: string | undefined;
+  radius?: number,
   size: number;
   onPress: () => void;
   children: ReactNode;
 }) {
   return (
-    <View style={[style.touchable, { height: size }]}>
-      <TouchableRipple onPress={onPress}>{children}</TouchableRipple>
+    <View style={[style.touchable, { height: size, borderRadius: radius=== undefined ? 100: radius }]}>
+      <TouchableRipple onPress={onPress} style={{height:40,width:40}}>{children}</TouchableRipple>
     </View>
   );
 }
@@ -29,7 +28,6 @@ const style = StyleSheet.create({
     height: 40,
     padding: 0,
 
-    backgroundColor: "#00000016",
     overflow: "hidden",
   },
 });

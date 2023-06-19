@@ -4,6 +4,8 @@ import { ArrowRight, CloseCircleIcon, TrashIcon } from "../icons";
 import HeaderTextClose from "../UI/HeaderTextClose";
 import { Button } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
+import InputText from "./UI/InputText";
+import InputLeftText from "./UI/InputLeftText";
 
 export default function EditComponent() {
   const modalState = useAppSelector((state) => state.modal);
@@ -11,7 +13,10 @@ export default function EditComponent() {
   return (
     <View style={styles.screen}>
       <HeaderTextClose header="Edit" />
-      <View style={{ flex: 1 }}></View>
+      <View style={{ width: "100%", height: "100%" }}>
+        <InputText />
+        <InputLeftText icon={undefined}  />
+      </View>
     </View>
   );
 }

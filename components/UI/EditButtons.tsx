@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { ArrowRight, TrashIcon } from "../icons";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
-import { deleteExpense } from "../../redux/slice/expenseSlice";
+import { deleteExpense, updateExpense } from "../../redux/slice/expenseSlice";
 import { closeModal } from "../../redux/slice/modalSlice";
 
 export default function EditButtons() {
@@ -12,6 +12,20 @@ export default function EditButtons() {
   const deleteExpenseHandler = () => {
     console.log(modalState.id, "deleted");
     dispatch(deleteExpense({ id: modalState.id || "" }));
+    dispatch(closeModal());
+  };
+  const updateExpenseHandler = () => {
+    dispatch(
+      updateExpense({
+        id: modalState.id || "",
+        expense: {
+          name: "Syscode",
+          amount: 1000,
+          category: "Internet",
+          date: new Date(),
+        },
+      })
+    );
     dispatch(closeModal())
   };
   return (
@@ -26,7 +40,7 @@ export default function EditButtons() {
         Delete
       </Button>
       <Button
-        onPress={() => {}}
+        onPress={updateExpenseHandler}
         icon={({ color, size }) => <ArrowRight color={color} size={size} />}
         mode="contained"
         contentStyle={{ flexDirection: "row-reverse" }}

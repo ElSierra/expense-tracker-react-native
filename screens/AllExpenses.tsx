@@ -7,6 +7,7 @@ import { useAppSelector } from "../redux/hooks/hooks";
 
 export default function AllExpenses() {
   const expensesList = useAppSelector((state) => state.expense.expenses);
+  const newExpense = [...expensesList]
   return (
     <View style={styles.root}>
       <View style={styles.allExpensesContainer}>
@@ -14,7 +15,7 @@ export default function AllExpenses() {
       </View>
       <View style={styles.main}>
         <ExpenseComponent
-          expenses={expensesList}
+          expenses={newExpense.reverse()}
           periodName="Total"
           ListHeaderComponent={<ChartFull />}
         />

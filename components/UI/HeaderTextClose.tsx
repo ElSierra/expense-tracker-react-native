@@ -1,43 +1,77 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Keyboard } from "react-native";
 import IconButton from "./IconButton";
 import { CloseCircleIcon } from "../icons";
 import { useAppDispatch } from "../../redux/hooks/hooks";
-import { closeModal } from "../../redux/slice/modalSlice";
+import { closeModal, openModalAdd } from "../../redux/slice/modalSlice";
+import { useEffect, useState } from "react";
+import { doNothing } from "../../redux/slice/expenseSlice";
 
 export default function HeaderTextClose({ header }: { header: string }) {
+  const dispatch = useAppDispatch();
 
-const dispatch = useAppDispatch()
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.headerContainer}>
+      <View style={styles.headerTextContainer}>
+        <Text style={styles.headerText}>{header}</Text>
+      </View>
       <View style={styles.closeContainer}>
         <View style={{ height: 30, width: 30 }}>
           <IconButton
-            pressColor="red"
-            tintColor="red"
-            onPress={() => {dispatch(closeModal())}}
+            onPress={() => {
+              // Keyboard.dismiss();
+              // if (isKeyboardVisible){
+              // setTimeout(() => {
+              //   dispatch(closeModal());
+              // }, 50);}else {
+              //   dispatch(closeModal());
+              // }
+              if (isKeyboardVisible) {
+               
+                dispatch(doNothing());
+                dispatch(closeModal());
+              }
+
+              dispatch(closeModal());
+            }}
             size={30}
           >
             <CloseCircleIcon color={"#580000"} size={30} />
           </IconButton>
         </View>
       </View>
-      <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>{header}</Text>
-      </View>
-      <View style={styles.headerTextContainer} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    alignItems: "center",
-  },
   headerContainer: {
     flexDirection: "row",
-
+    width: "100%",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 20,
   },
   headerText: {
     fontFamily: "JakaraExtraBold",
@@ -45,11 +79,9 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
   closeContainer: {
-    width: "33.3%",
     alignItems: "flex-start",
   },
   headerTextContainer: {
-    width: "33.3%",
     alignItems: "center",
     justifyContent: "center",
   },

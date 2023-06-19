@@ -5,6 +5,7 @@ import { Dimensions } from "react-native";
 export default function Card() {
   const width = Dimensions.get("window").width;
   return (
+    <View style={{width, alignItems: "center"}}>
     <ImageBackground
       resizeMode="cover"
       imageStyle={{ opacity: 1 }}
@@ -17,7 +18,7 @@ export default function Card() {
       <View style={[style.chartContainer, { width: width * 0.75 }]}>
         <Chart height={100} width={width * 0.7} withHorizontalLabels={false} />
       </View>
-    </ImageBackground>
+    </ImageBackground></View>
   );
 }
 
@@ -38,7 +39,7 @@ const style = StyleSheet.create({
   frontBox: {
     height: 210,
     overflow: "hidden",
-    aspectRatio: 6442 / 3771,
+   aspectRatio: 6442 / 3771,
     padding: 20,
     marginTop: 50,
   },

@@ -1,5 +1,5 @@
 import { FlashList } from "@shopify/flash-list";
-import React, { ReactNode, useEffect, useLayoutEffect } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import ListContainer from "./ListContainer";
 import { Expenses } from "../../data/model";
 import { FlatList, LayoutAnimation, RefreshControl, View } from "react-native";
@@ -13,6 +13,7 @@ export default function ExpenseList({
 }) {
   const [refreshing, setRefreshing] = React.useState(false);
 
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -20,17 +21,15 @@ export default function ExpenseList({
     }, 2000);
   }, []);
 
-  
-
-
   return (
     <View style={{ flex: 1 }}>
       <FlashList
-        estimatedItemSize={20}
+        estimatedItemSize={80}
         data={expenses}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        stickyHeaderHiddenOnScroll
         ListHeaderComponent={ListHeaderComponent}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
