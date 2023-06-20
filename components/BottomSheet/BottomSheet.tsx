@@ -5,7 +5,14 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { View, Text, StyleSheet, Pressable, BackHandler } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  BackHandler,
+  useColorScheme,
+} from "react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetFooter,
@@ -22,23 +29,32 @@ import EditButtons from "../UI/EditButtons";
 import AddButtons from "../UI/AddButtons";
 import AddComponent from "../BottomSheetContainer/AddComponent";
 import { FadeInView } from "../FadeInView";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
-export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
+export const BottomSheetContainer = ({
+  children,
+}: {
+  children?: ReactNode;
+}) => {
   const ModalState = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
-
-  // ref
   const sheetRef = useRef<BottomSheet>(null);
-
-  // variables
   const snapPoints = useMemo(() => ["50%", "75%", "98%"], []);
 
+  const theme = useColorScheme();
+  const isDarkTheme = theme === "dark";
+
   if (ModalState.id && ModalState.isOpen) {
-    sheetRef.current?.snapToIndex(2);
+    sheetRef.current?.snapToIndex(1);
   } else if (!ModalState.id && ModalState.isOpen) {
     sheetRef.current?.snapToIndex(2);
   }
-
+  useEffect(() => {
+    sheetRef.current?.close();
+  }, []);
   const handleSheetChanges = useCallback((index: number) => {
     console.log(
       "🚀 ~ file: BottomSheet.tsx:42 ~ handleSheetChanges ~ index:",
@@ -86,74 +102,78 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
     return () => backHandler.remove();
   }, []);
 
-  const renderFooter = useCallback(
-    (props: any) => {
-      console.log("isEdit", isEditing);
-      if (isEditing)
-        return (
-          <BottomSheetFooter  {...props} bottomInset={0}>
-            <View style={styles.footerContainer}>
-              <EditButtons />
-            </View>
-          </BottomSheetFooter>
-        );
-      else {
-        return(
-          <BottomSheetFooter {...props} bottomInset={20}>
-            <View style={styles.footerContainer}>
-              <AddButtons />
-            </View>
-          </BottomSheetFooter>
-        )
-      }
-    },
-    [isEditing]
-  );
+  const renderFooter = (props: any) => {
+    console.log("isEdit", isEditing);
+
+    return (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View style={styles.footerContainer}>
+          {ModalState.id ? (
+            <EditButtons />
+          ) : !ModalState.id && ModalState.isOpen ? (
+            <AddButtons />
+          ) : null}
+        </View>
+      </BottomSheetFooter>
+    );
+  };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        {children}
+    <>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          {children}
 
-        <BottomSheet
-          ref={sheetRef}
-          footerComponent={renderFooter}
-          handleIndicatorStyle={{ display: "none" }}
-          index={-1}
-          enablePanDownToClose
-          snapPoints={snapPoints}
-          backgroundComponent={CustomBackground}
-          backdropComponent={renderBackdrop}
-          onChange={handleSheetChanges}
-        >
-          <View style={styles.contentScreen}>
-            <Pressable
-              style={({ pressed }) => [
-                styles.handleContainer,
-                {
-                  backgroundColor: !pressed ? "#062C032B" : "black",
-                },
+          <BottomSheet
+            ref={sheetRef}
+            animateOnMount={false}
+            footerComponent={renderFooter}
+            handleIndicatorStyle={{ display: "none" }}
+            index={-1}
+            enablePanDownToClose
+            snapPoints={snapPoints}
+            backgroundComponent={CustomBackground}
+            backdropComponent={renderBackdrop}
+            onChange={handleSheetChanges}
+          >
+            <View
+              style={[
+                styles.contentScreen,
+                { backgroundColor: isDarkTheme ? "#161b22" : "white" },
               ]}
             >
-              <View />
-            </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.handleContainer,
+                  {
+                    backgroundColor: !pressed ? "#062C032B" : "black",
+                  },
+                ]}
+              >
+                <View />
+              </Pressable>
 
-            <View
-              style={{
-                height: "100%",
-                width: "100%",
-                paddingHorizontal: 20,
-                paddingTop: 5,
-              }}
-            >
-              <View style={styles.contentContainer}>
-                {isEditing ? <EditComponent /> : <AddComponent />}
+              <View
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  paddingHorizontal: 20,
+                  paddingTop: 5,
+                }}
+              >
+                <View style={styles.contentContainer}>
+                  {ModalState.id ? (
+                    <EditComponent />
+                  ) : !ModalState.id && ModalState.isOpen ? (
+                    <AddComponent />
+                  ) : null}
+                </View>
               </View>
             </View>
-          </View>
-        </BottomSheet>
-      </View>
-    </GestureHandlerRootView>
+          </BottomSheet>
+        </View>
+      </GestureHandlerRootView>
+    </>
   );
 };
 
@@ -163,7 +183,6 @@ const styles = StyleSheet.create({
   },
   contentScreen: {
     flex: 1,
-    backgroundColor: "white",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",

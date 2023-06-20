@@ -1,12 +1,12 @@
 import { TextInput } from "react-native-paper";
 
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 
 export default function InputText() {
   return (
     <View>
-      <Text>TextInput</Text>
+      <Text style={styles.labelText}>TextInput</Text>
       <TextInput
         mode="outlined"
         style={{ width: "100%", height: 40, backgroundColor: "#DEFFB71D" }}
@@ -15,10 +15,17 @@ export default function InputText() {
           borderWidth: 1,
           borderColor: "#CEC5C5",
         }}
-        outlineStyle={{ borderRadius: 10, borderWidth: 1.5 }}
+        outlineStyle={{ borderRadius: 10, borderWidth: 1 }}
         activeOutlineColor="#450559"
         outlineColor="#AEAAAA"
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  labelText: {
+    fontFamily: 'JakaraExtraBold',
+    color: "#656565"
+  },
+});

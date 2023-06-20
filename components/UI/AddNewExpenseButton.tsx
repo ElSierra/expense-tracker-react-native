@@ -1,6 +1,6 @@
 import { TouchableRipple } from "react-native-paper";
 import { AddIcon } from "../icons";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, useColorScheme } from "react-native";
 
 export default function AddNewExpenseButton({
   pressColor,
@@ -11,10 +11,16 @@ export default function AddNewExpenseButton({
   tintColor: string | undefined;
   onPress: () => void;
 }) {
+  const theme = useColorScheme();
+
+  const isDarkTheme = theme === "dark";
   return (
     <View style={style.touchable}>
-      <TouchableRipple onPress={onPress}>
-        <AddIcon color={"#580000"} size={40} />
+      <TouchableRipple
+        onPress={onPress}
+        style={{ backgroundColor: isDarkTheme ? "#161b22" : "#FFCECE" }}
+      >
+        <AddIcon color={isDarkTheme ? "white" : "#00465B"} size={40} />
       </TouchableRipple>
     </View>
   );

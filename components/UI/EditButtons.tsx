@@ -32,6 +32,7 @@ export default function EditButtons() {
     <View style={styles.buttonContainer}>
       <Button
         onPress={deleteExpenseHandler}
+        
         icon={({ color, size }) => <TrashIcon color={color} size={size} />}
         mode="text"
         textColor="#FF2A29"
@@ -41,6 +42,7 @@ export default function EditButtons() {
       </Button>
       <Button
         onPress={updateExpenseHandler}
+        labelStyle={{color: 'white'}}
         icon={({ color, size }) => <ArrowRight color={color} size={size} />}
         mode="contained"
         contentStyle={{ flexDirection: "row-reverse" }}

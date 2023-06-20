@@ -3,14 +3,14 @@ import { TextInput } from "react-native-paper";
 import { View, Text } from "react-native";
 import React, { ReactNode } from "react";
 
-export default function InputLeftText({ icon }: { icon: ReactNode }) {
+export default function InputIconText({ icon }: { icon: ReactNode }) {
   return (
     <View style={{ flex: 1 }}>
       <Text>TextInput</Text>
       <TextInput
-        right={
+        left={
           <TextInput.Icon
-          onPress={()=>{}}
+            onPress={() => {}}
             style={{
               width: 40,
               height: 40,

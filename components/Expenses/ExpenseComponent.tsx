@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, useColorScheme } from "react-native";
 
 import ExpenseList from "./ExpenseList";
 import { Expenses } from "../../data/model";
@@ -12,6 +12,9 @@ export default function ExpenseComponent({
   periodName: string;
   ListHeaderComponent?: JSX.Element;
 }) {
+  const theme = useColorScheme();
+
+  const isDarkTheme = theme === "dark";
   const expenseSum = expenses.reduce((acc, curr) => acc + curr.amount, 0);
   const formattedExpenseSum = new Intl.NumberFormat("en-NG", {
     style: "currency",
@@ -21,9 +24,22 @@ export default function ExpenseComponent({
   }).format(expenseSum);
   return (
     <View style={styles.root}>
-      <View style={styles.header}>
-        <Text style={styles.textHead}>{periodName}</Text>
-        <Text style={styles.textHead}>{formattedExpenseSum}</Text>
+      <View
+        style={[
+          styles.header,
+          { backgroundColor: isDarkTheme ? "#161b22" : "white" },
+        ]}
+      >
+        <Text
+          style={[styles.textHead, { color: isDarkTheme ? "white" : "black" }]}
+        >
+          {periodName}
+        </Text>
+        <Text
+          style={[styles.textHead, { color: isDarkTheme ? "white" : "black" }]}
+        >
+          {formattedExpenseSum}
+        </Text>
       </View>
       {expenses.length > 0 ? (
         <ExpenseList
@@ -44,7 +60,7 @@ const styles = StyleSheet.create({
   header: {
     borderRadius: 10,
     padding: 10,
-    backgroundColor: "#FFFFFF",
+
     flexDirection: "row",
     paddingHorizontal: 16,
     justifyContent: "space-between",
@@ -52,7 +68,7 @@ const styles = StyleSheet.create({
   },
   textHead: {
     fontSize: 15,
-    color: "black",
+
     fontFamily: "JakaraExtraBold",
   },
 });

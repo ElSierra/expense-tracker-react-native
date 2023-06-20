@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Keyboard } from "react-native";
+import { View, Text, StyleSheet, Keyboard, useColorScheme } from "react-native";
 import IconButton from "./IconButton";
 import { CloseCircleIcon } from "../icons";
 import { useAppDispatch } from "../../redux/hooks/hooks";
@@ -30,11 +30,20 @@ export default function HeaderTextClose({ header }: { header: string }) {
       keyboardDidShowListener.remove();
     };
   }, []);
+  const theme = useColorScheme();
 
+  const isDarkTheme = theme === "dark";
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>{header}</Text>
+        <Text
+          style={[
+            styles.headerText,
+            { color: isDarkTheme ? "white" : "black" },
+          ]}
+        >
+          {header}
+        </Text>
       </View>
       <View style={styles.closeContainer}>
         <View style={{ height: 30, width: 30 }}>
@@ -48,7 +57,6 @@ export default function HeaderTextClose({ header }: { header: string }) {
               //   dispatch(closeModal());
               // }
               if (isKeyboardVisible) {
-               
                 dispatch(doNothing());
                 dispatch(closeModal());
               }
@@ -57,7 +65,7 @@ export default function HeaderTextClose({ header }: { header: string }) {
             }}
             size={30}
           >
-            <CloseCircleIcon color={"#580000"} size={30} />
+            <CloseCircleIcon color={"#FF0000"} size={30} />
           </IconButton>
         </View>
       </View>

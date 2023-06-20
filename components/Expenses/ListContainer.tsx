@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, useColorScheme } from "react-native";
 import { Expenses } from "../../data/model";
 import { getFormatDate } from "../../util/date";
 import { TouchableRipple } from "react-native-paper";
@@ -8,7 +8,9 @@ import { openModalEdit } from "../../redux/slice/modalSlice";
 
 export default function ListContainer({ expense }: { expense: Expenses }) {
   const dispatch = useAppDispatch();
+  const theme = useColorScheme();
 
+  const isDarkTheme = theme === "dark";
   function renderEmoji() {
     if (expense.category === "Food") {
       return "🍝";
@@ -34,24 +36,43 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
   return (
     <View style={styles.touchable}>
       <TouchableRipple
-        rippleColor={"#E3CBCB"}
+        rippleColor={!isDarkTheme ?"#E3CBCB": "#000000"}
+        style={{ backgroundColor: isDarkTheme ? "#161b22" : "white" }}
         onPress={() => {
           dispatch(openModalEdit({ id: expense.id }));
         }}
       >
-        <View style={styles.listContainer}>
+        <View style={[styles.listContainer]}>
           <View style={styles.leftSide}>
-            <View style={styles.emojiContainer}>
+            <View
+              style={[
+                styles.emojiContainer,
+                { backgroundColor: isDarkTheme ? "#3F3F3F" : "white" },
+              ]}
+            >
               <Text style={styles.emojiTextStyle}>{renderEmoji()}</Text>
             </View>
             <View style={styles.costName}>
-              <Text style={styles.textHead}>{expense.name}</Text>
+              <Text
+                style={[
+                  styles.textHead,
+                  { color: isDarkTheme ? "white" : "black" },
+                ]}
+              >
+                {expense.name}
+              </Text>
               <Text style={styles.textFoot}>{getFormatDate(expense.date)}</Text>
             </View>
           </View>
 
           <View style={styles.rightSide}>
-            <Text style={[styles.textHead, { textAlign: "right" }]}>
+            <Text
+              style={[
+                styles.textHead,
+                { textAlign: "right" },
+                { color: isDarkTheme ? "white" : "black" },
+              ]}
+            >
               {formattedExpenseSum}
             </Text>
             <Text style={[styles.textFoot, { textAlign: "right" }]}></Text>
@@ -68,14 +89,12 @@ const styles = StyleSheet.create({
     padding: 20,
 
     alignItems: "center",
-    borderRadius: 20,
 
     justifyContent: "space-between",
   },
   emojiContainer: {
     padding: 10,
     borderRadius: 12,
-    backgroundColor: "#f8f9fb",
   },
   emojiTextStyle: {
     fontSize: 20,
@@ -98,11 +117,11 @@ const styles = StyleSheet.create({
   },
   rightSide: {},
   touchable: {
-    borderRadius: 12,
+    borderRadius: 20,
     padding: 0,
 
     marginBottom: 10,
-    backgroundColor: "white",
+
     overflow: "hidden",
   },
 });

@@ -1,9 +1,12 @@
-import { View, Dimensions, Text } from "react-native";
+import { View, Dimensions, Text, useColorScheme } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { FadeInView } from "../FadeInView";
 
 export default function ChartFull() {
+  const theme = useColorScheme();
+
+  const isDarkTheme = theme === "dark";
   return (
     <View style={{ flex: 1 }}>
       <LineChart
@@ -24,7 +27,9 @@ export default function ChartFull() {
           ],
           datasets: [
             {
-              data: [500, 200, 800, 400, 600, 600, 900,500, 200, 800, 400, 600,],
+              data: [
+                500, 200, 800, 400, 600, 600, 900, 500, 200, 800, 400, 600,
+              ],
             },
           ],
         }}
@@ -34,14 +39,19 @@ export default function ChartFull() {
         yAxisSuffix="k"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
-          backgroundColor: "#000000",
-          backgroundGradientFrom: "#00000000",
-          backgroundGradientTo: "#00000000",
-          decimalPlaces:0, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          backgroundColor: isDarkTheme ? "#000000" : "#FFFFFF",
+          backgroundGradientFrom: isDarkTheme ? "#000000" : "#FFFFFF",
+          backgroundGradientTo: isDarkTheme ? "#000000" : "#FFFFFF",
+          decimalPlaces: 0, // optional, defaults to 2dp
+          color: (opacity = 1) =>
+            !isDarkTheme
+              ? `rgba(0, 0, 0, ${opacity})`
+              : `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) =>
+            !isDarkTheme
+              ? `rgba(0, 0, 0, ${opacity})`
+              : `rgba(255, 255, 255, ${opacity})`,
           style: {
-            
             borderRadius: 16,
           },
           propsForDots: {

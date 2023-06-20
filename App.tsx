@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PaperProvider } from "react-native-paper";
+import { DefaultTheme, PaperProvider } from "react-native-paper";
 import App from "./AppComponent";
 
 import { useFonts } from "expo-font";
@@ -7,9 +7,10 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { useCallback } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Appearance, useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+
 
 SplashScreen.preventAutoHideAsync();
 export default function Main() {
@@ -31,11 +32,14 @@ export default function Main() {
     return null;
   }
 
+
+ 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <PaperProvider>
-        <StatusBar animated={true} style="dark" backgroundColor="transparent" />
+      <PaperProvider >
+      
         <Provider store={store}>
+          
           <App />
         </Provider>
       </PaperProvider>

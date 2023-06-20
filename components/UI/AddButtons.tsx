@@ -6,9 +6,7 @@ import { closeModal } from "../../redux/slice/modalSlice";
 import { useAppDispatch } from "../../redux/hooks/hooks";
 
 export default function AddButtons() {
-const dispatch = useAppDispatch()
-
-
+  const dispatch = useAppDispatch();
 
   const updateExpenseHandler = () => {
     dispatch(
@@ -23,16 +21,22 @@ const dispatch = useAppDispatch()
   };
   return (
     <View style={styles.buttonContainer}>
-      
       <Button
         onPress={updateExpenseHandler}
         icon={({ color, size }) => <ArrowRight color={color} size={size} />}
         mode="contained"
-        labelStyle ={{fontSize: 16, fontFamily: 'JakaraSemiBold'}}
-        contentStyle={{ flexDirection: "row-reverse",}}
-        style={{ borderRadius: 10, backgroundColor: "#00BA62", width: "100%", height: 50, alignItems: 'center', justifyContent: "center",   }}
+        labelStyle={{ fontSize: 16, fontFamily: "JakaraSemiBold", color: 'white' }}
+        contentStyle={{ flexDirection: "row-reverse" }}
+        style={{
+          borderRadius: 10,
+          backgroundColor: "#00BA62",
+          width: "100%",
+          height: 50,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <Text>Add</Text>
+        Add
       </Button>
     </View>
   );

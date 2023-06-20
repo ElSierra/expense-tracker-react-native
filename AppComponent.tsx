@@ -21,36 +21,48 @@ import { openModalAdd } from "./redux/slice/modalSlice";
 import { Avatar, TouchableRipple } from "react-native-paper";
 import { FadeInView } from "./components/FadeInView";
 import Profile from "./screens/Profile";
+import { useAppSelector } from "./redux/hooks/hooks";
+import { useColorScheme } from "react-native";
+
 import {
   ExpenseProp,
   ProfileProp,
   RootStackParamList,
 } from "./types/navigation";
 import IconButton from "./components/UI/IconButton";
+import BottomSheetScreen from "./screens/BottomSheetScreen";
+import { StatusBar } from "expo-status-bar";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 // const Tab = createBottomTabNavigator();
 
 const Tab = createMaterialTopTabNavigator();
 function BottomTabNavigator() {
+  const theme = useColorScheme();
+  console.log(
+    "🚀 ~ file: AppComponent.tsx:40 ~ BottomTabNavigator ~ theme:",
+    theme
+  );
+  const isDarkTheme = theme === "dark";
   return (
     <Tab.Navigator
       tabBarPosition="bottom"
       sceneContainerStyle={{
-        backgroundColor: "transparent",
+        backgroundColor: isDarkTheme ? "#000000" : "transparent",
         paddingHorizontal: 25,
       }}
       screenOptions={{
         tabBarIndicatorStyle: {
           backgroundColor: "transparent",
         },
-        tabBarAndroidRipple: { color: "#FFDDDD", borderless: true },
+
+        tabBarAndroidRipple: { color: !isDarkTheme?"#DED2FF": "#212020", borderless: true },
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "black",
+        tabBarActiveTintColor: isDarkTheme ? "white" : "black",
         tabBarStyle: {
           height: 70,
-          backgroundColor: "#FFFFFF",
-          borderTopWidth: 0,
-
+          backgroundColor: isDarkTheme ? "#000000" : "#FFFFFF",
+          borderTopWidth: isDarkTheme ? 1 : 0,
+          borderTopColor: "#282828",
           shadowColor: "red",
 
           shadowRadius: 200,
@@ -93,90 +105,117 @@ function BottomTabNavigator() {
 
 export default function App() {
   const dispatch = useAppDispatch();
-  const { width, height } = Dimensions.get("window");
-  return (
-    <BottomSheetContainer>
-      <ImageBackground
-        resizeMode="cover"
-        style={{ flex:1 }} //! style={{flex:1}}, incase of ui issues
-        imageStyle={{ opacity: 0.1 }}
-        source={require("./assets/images/bg.png")}
-      >
-        <Stack.Navigator
-          screenOptions={{ contentStyle: { backgroundColor: "#00000000" } }}
-        >
-          <Stack.Screen
-            name="ExpenseApp"
-            component={BottomTabNavigator}
-            options={({ navigation }: ExpenseProp) => {
-              return {
-                headerShown: true,
-                headerTitle: "",
+  const modalState = useAppSelector((state) => state.modal);
 
-                headerLeft: ({}) => (
-                  <FadeInView
-                    style={{ width: 40, borderRadius: 100, overflow: "hidden" }}
-                  >
-                    <TouchableRipple
-                      style={{ borderRadius: 100 }}
-                      onPress={() => {
-                        navigation.navigate("Profile");
+  const { width, height } = Dimensions.get("window");
+  const theme = useColorScheme();
+  console.log(
+    "🚀 ~ file: AppComponent.tsx:40 ~ BottomTabNavigator ~ theme:",
+    theme
+  );
+  const isDarkTheme = theme === "dark";
+  return (
+    <>
+      <StatusBar
+        animated={true}
+        style={isDarkTheme ? "light" : "dark"}
+        backgroundColor="transparent"
+      />
+      <BottomSheetContainer>
+        {/* {<BottomSheetScreen/>} */}
+
+        <ImageBackground
+          resizeMode="cover"
+          style={{ flex: 1 }} //! style={{flex:1}}, incase of ui issues
+          imageStyle={{ opacity: 0.1 }}
+          source={require("./assets/images/bg.png")}
+        >
+          <Stack.Navigator
+            screenOptions={{
+              contentStyle: {
+                backgroundColor: isDarkTheme ? "#000000" : "#FFFFFF00",
+              },
+            }}
+          >
+            <Stack.Screen
+              name="ExpenseApp"
+              component={BottomTabNavigator}
+              options={({ navigation }: ExpenseProp) => {
+                return {
+                  headerShown: true,
+                  headerTitle: "",
+
+                  headerLeft: ({}) => (
+                    <FadeInView
+                      style={{
+                        width: 40,
+                        borderRadius: 100,
+                        overflow: "hidden",
                       }}
                     >
-                      <Avatar.Image
-                        size={40}
-                        source={require("./assets/images/placeholder.png")}
+                      <TouchableRipple
+                        style={{ borderRadius: 100 }}
+                        onPress={() => {
+                          navigation.navigate("Profile");
+                        }}
+                      >
+                        <Avatar.Image
+                          size={40}
+                          source={require("./assets/images/placeholder.png")}
+                        />
+                      </TouchableRipple>
+                    </FadeInView>
+                  ),
+                  headerRight: ({ tintColor }) => (
+                    <FadeInView style={{ width: 50 }}>
+                      <AddNewExpenseButton
+                        pressColor={tintColor}
+                        tintColor={tintColor}
+                        onPress={() => {
+                          dispatch(openModalAdd());
+                        }}
                       />
-                    </TouchableRipple>
-                  </FadeInView>
-                ),
-                headerRight: ({ tintColor }) => (
-                  <FadeInView style={{ width: 50 }}>
-                    <AddNewExpenseButton
-                      pressColor={tintColor}
-                      tintColor={tintColor}
+                    </FadeInView>
+                  ),
+                  headerShadowVisible: false,
+                  headerTransparent: true,
+                };
+              }}
+            />
+            <Stack.Screen
+              name="Profile"
+              options={({ navigation }: ProfileProp) => {
+                return {
+                  animation: "slide_from_left",
+                  headerShadowVisible: false,
+                  headerTitleAlign: "center",
+                  headerTintColor: isDarkTheme? "white": "black",
+                  headerBackVisible: false,
+                  headerLeft: ({ tintColor, canGoBack }) => (
+                    <IconButton
+                      size={40}
+                      radius={10}
                       onPress={() => {
-                        dispatch(openModalAdd());
+                        console.log("pressed");
+                        navigation.goBack();
                       }}
-                    />
-                  </FadeInView>
-                ),
-                headerShadowVisible: false,
-                headerTransparent: true,
-              };
-            }}
-          />
-          <Stack.Screen
-            name="Profile"
-            options={({ navigation }: ProfileProp) => {
-              return {
-                animation: "slide_from_left",
-                headerShadowVisible: false,
-                headerTitleAlign: "center",
-                headerBackVisible: false,
-                headerLeft: ({ tintColor, canGoBack }) => (
-                  <IconButton
-                    size={40}
-                    radius={10}
-                    onPress={() => {
-                      console.log("pressed");
-                      navigation.goBack();
-                    }}
-                  >
-                    <BackIcon size={40} color={tintColor || "green"} />
-                  </IconButton>
-                ),
-                headerTitleStyle: {
-                  fontFamily: "JakaraExtraBold",
-                  fontSize: 20,
-                },
-                headerTransparent: true,
-              };
-            }}
-            component={Profile}
-          />
-        </Stack.Navigator>
-      </ImageBackground>
-    </BottomSheetContainer>
+                    >
+                      <BackIcon size={40} color={tintColor || "green"} />
+                    </IconButton>
+                  ),
+                  headerTitleStyle: {
+                    fontFamily: "JakaraExtraBold",
+                    fontSize: 20,
+                    color: isDarkTheme? "white": "black"
+                  },
+                  headerTransparent: true,
+                };
+              }}
+              component={Profile}
+            />
+          </Stack.Navigator>
+        </ImageBackground>
+      </BottomSheetContainer>
+    </>
   );
 }

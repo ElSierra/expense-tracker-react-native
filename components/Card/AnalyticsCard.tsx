@@ -4,6 +4,7 @@ import {
   Text,
   ImageBackground,
   ScrollView,
+  useColorScheme,
 } from "react-native";
 import { More } from "../icons";
 import ChartTest from "../Expenses/Chart";
@@ -14,14 +15,22 @@ import Card from "./Card";
 
 export default function AnalyticsCard() {
   const { height, width } = useWindowDimensions();
- 
+  const theme = useColorScheme();
+
+  const isDarkTheme = theme === "dark";
+
   return (
     <View style={style.root}>
-      <View style={style.backBox}></View>
+      <View
+        style={[
+          style.backBox,
+          { backgroundColor: !isDarkTheme ? "#F6E6A6" : "#F6E6A63B" },
+        ]}
+      ></View>
 
       <ScrollView
         horizontal
-        style={{width}}
+        style={{ width }}
         showsHorizontalScrollIndicator={false}
         decelerationRate={0}
         snapToInterval={width} //your element width
@@ -50,6 +59,4 @@ const style = StyleSheet.create({
     transform: [{ rotateY: "8deg" }, { rotateZ: "6deg" }],
     backgroundColor: "#F6E6A6",
   },
-
-
 });
