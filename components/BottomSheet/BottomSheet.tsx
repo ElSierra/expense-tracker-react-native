@@ -26,6 +26,7 @@ import { FadeInView } from "../FadeInView";
 export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
   const ModalState = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
+
   // ref
   const sheetRef = useRef<BottomSheet>(null);
 
@@ -33,7 +34,7 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
   const snapPoints = useMemo(() => ["50%", "75%", "98%"], []);
 
   if (ModalState.id && ModalState.isOpen) {
-    sheetRef.current?.snapToIndex(1);
+    sheetRef.current?.snapToIndex(2);
   } else if (!ModalState.id && ModalState.isOpen) {
     sheetRef.current?.snapToIndex(2);
   }
@@ -85,17 +86,29 @@ export const BottomSheetContainer = ({ children }: { children: ReactNode }) => {
     return () => backHandler.remove();
   }, []);
 
-  const renderFooter = (props: any) => {
-    console.log("isEdit", isEditing);
-    
-    return (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={styles.footerContainer}>
-          {!isEditing ? <AddButtons /> : <EditButtons />}
-        </View>
-      </BottomSheetFooter>
-    );
-  };
+  const renderFooter = useCallback(
+    (props: any) => {
+      console.log("isEdit", isEditing);
+      if (isEditing)
+        return (
+          <BottomSheetFooter  {...props} bottomInset={0}>
+            <View style={styles.footerContainer}>
+              <EditButtons />
+            </View>
+          </BottomSheetFooter>
+        );
+      else {
+        return(
+          <BottomSheetFooter {...props} bottomInset={20}>
+            <View style={styles.footerContainer}>
+              <AddButtons />
+            </View>
+          </BottomSheetFooter>
+        )
+      }
+    },
+    [isEditing]
+  );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
