@@ -26,13 +26,12 @@ export default function EditButtons() {
         },
       })
     );
-    dispatch(closeModal())
+    dispatch(closeModal());
   };
   return (
     <View style={styles.buttonContainer}>
       <Button
         onPress={deleteExpenseHandler}
-        
         icon={({ color, size }) => <TrashIcon color={color} size={size} />}
         mode="text"
         textColor="#FF2A29"
@@ -42,7 +41,7 @@ export default function EditButtons() {
       </Button>
       <Button
         onPress={updateExpenseHandler}
-        labelStyle={{color: 'white'}}
+        labelStyle={{ color: "white" }}
         icon={({ color, size }) => <ArrowRight color={color} size={size} />}
         mode="contained"
         contentStyle={{ flexDirection: "row-reverse" }}
@@ -56,6 +55,11 @@ export default function EditButtons() {
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    width: "100%",
+    
+    alignContent: "center",
+
+    justifyContent: "center",
     flexDirection: "row",
     gap: 2,
   },

@@ -2,6 +2,7 @@ import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { View, Button, Text } from "react-native";
 import { TouchableRipple } from "react-native-paper";
+import { isDateToday } from "../../../util/date";
 
 export const DatePickerAndroid = ({
   date,
@@ -16,6 +17,12 @@ export const DatePickerAndroid = ({
       onChange,
       mode: currentMode,
       is24Hour: true,
+      display: 'default',
+     
+     
+    
+      
+
     });
   };
 
@@ -24,22 +31,25 @@ export const DatePickerAndroid = ({
   };
 
   return (
-    <View>
+    <View style={{ height: 45 , borderRadius: 10, overflow: "hidden"}}>
       {/* <Button onPress={showDatepicker} title="Show date picker!" /> */}
 
       <TouchableRipple
         onPress={showDatepicker}
         style={{
-          height: 40,
+          height: "100%",
           width: "100%",
+          borderRadius: 10,
+          overflow: "hidden",
           backgroundColor: "#E4E2E2",
-          alignItems: "center",
+          paddingLeft: 10,
           justifyContent: "center",
         }}
       >
-        <Text>
-          {date.toLocaleString().split(",")[0]} {date === new Date() && "today"}
+        <Text style={{ fontSize: 15, fontFamily: "JakaraMedium" }}>
+          {date.toLocaleString().split(",")[0]} {isDateToday(date) && " - Today"}
         </Text>
+        
       </TouchableRipple>
     </View>
   );

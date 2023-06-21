@@ -12,7 +12,7 @@ export default function Card() {
       style={style.frontBox}
       source={require("../../assets/images/box-cut.png")}
     >
-      <Text style={style.header}>Total Spent For the month of June</Text>
+      <Text style={style.header}>Total Spent (This week)</Text>
 
       <Text style={style.money}>₦50,000</Text>
       <View style={[style.chartContainer, { width: width * 0.75 }]}>

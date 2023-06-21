@@ -33,6 +33,8 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { set } from "date-fns";
+import { AnimatedButton } from "../BottomSheetContainer/UI/AnimateButton";
 
 export const BottomSheetContainer = ({
   children,
@@ -42,7 +44,8 @@ export const BottomSheetContainer = ({
   const ModalState = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["50%", "75%", "98%"], []);
+  const snapPoints = useMemo(() => ["60%", "90%"], []);
+  const [isAlmostClosed, setIsAlmostClosed] = React.useState(false);
 
   const theme = useColorScheme();
   const isDarkTheme = theme === "dark";
@@ -50,11 +53,15 @@ export const BottomSheetContainer = ({
   if (ModalState.id && ModalState.isOpen) {
     sheetRef.current?.snapToIndex(1);
   } else if (!ModalState.id && ModalState.isOpen) {
-    sheetRef.current?.snapToIndex(2);
+    sheetRef.current?.snapToIndex(1);
   }
   useEffect(() => {
-    sheetRef.current?.close();
-  }, []);
+    if (ModalState.id && ModalState.isOpen) {
+      setIsAlmostClosed(false);
+    } else if (!ModalState.id && ModalState.isOpen) {
+      setIsAlmostClosed(false);
+    }
+  }, [ModalState.id, ModalState.isOpen]);
   const handleSheetChanges = useCallback((index: number) => {
     console.log(
       "🚀 ~ file: BottomSheet.tsx:42 ~ handleSheetChanges ~ index:",
@@ -83,6 +90,10 @@ export const BottomSheetContainer = ({
           pressBehavior={"close"}
           disappearsOnIndex={-1}
           appearsOnIndex={2}
+          onPress={() => {
+            setIsAlmostClosed(true);
+            console.log("pressed");
+          }}
         />
       </>
     ),
@@ -102,19 +113,17 @@ export const BottomSheetContainer = ({
     return () => backHandler.remove();
   }, []);
 
-  const renderFooter = (props: any) => {
+  const Footer = (props: any) => {
     console.log("isEdit", isEditing);
 
     return (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={styles.footerContainer}>
-          {ModalState.id ? (
-            <EditButtons />
-          ) : !ModalState.id && ModalState.isOpen ? (
-            <AddButtons />
-          ) : null}
-        </View>
-      </BottomSheetFooter>
+      <FadeInView style={styles.footerContainer}>
+        {ModalState.id ? (
+          <EditButtons />
+        ) : !ModalState.id || ModalState.isOpen ? (
+          <AddButtons />
+        ) : null}
+      </FadeInView>
     );
   };
 
@@ -124,10 +133,25 @@ export const BottomSheetContainer = ({
         <View style={styles.container}>
           {children}
 
+          {/* {ModalState.isOpen && !isAlmostClosed ? <Footer /> : null} */}
+          <AnimatedButton
+            isVisible={
+              (ModalState.isOpen || !isAlmostClosed) && ModalState.id !== null
+            }
+          >
+            <EditButtons />
+          </AnimatedButton>
+
+          {/* {ModalState.isOpen && !isAlmostClosed ? <Footer /> : null} */}
+          <AnimatedButton
+            isVisible={ModalState.isOpen && ModalState.id === null}
+          >
+            <AddButtons />
+          </AnimatedButton>
+
           <BottomSheet
             ref={sheetRef}
-            animateOnMount={false}
-            footerComponent={renderFooter}
+            animateOnMount={true}
             handleIndicatorStyle={{ display: "none" }}
             index={-1}
             enablePanDownToClose
@@ -200,10 +224,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   footerContainer: {
-    padding: 12,
-    margin: 12,
-    borderRadius: 12,
-    alignItems: "center",
+    width: "100%",
   },
   footerText: {
     textAlign: "center",

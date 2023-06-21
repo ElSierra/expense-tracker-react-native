@@ -20,6 +20,8 @@ import { useRef, useState } from "react";
 import { categoryList } from "../../data/category";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { DatePickerAndroid } from "./UI/DatePicker";
+
+
 export default function EditComponent() {
   const width = Dimensions.get("screen").width;
   const modalState = useAppSelector((state) => state.modal);
@@ -59,7 +61,7 @@ export default function EditComponent() {
         />
         <InputText
           icon={"₦"}
-          value={content.amount.toString() || ""}
+          value={content.amount?.toString() || ""}
           onChange={() => {}}
           label="Amount"
         />
@@ -88,6 +90,7 @@ export default function EditComponent() {
             Date
           </Text>
           <DatePickerAndroid date={date} onChange={onChange} />
+
         </View>
       </View>
     </View>

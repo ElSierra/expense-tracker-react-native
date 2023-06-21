@@ -57,6 +57,7 @@ export default function HeaderTextClose({ header }: { header: string }) {
               //   dispatch(closeModal());
               // }
               if (isKeyboardVisible) {
+                Keyboard.dismiss()
                 dispatch(doNothing());
                 dispatch(closeModal());
               }
