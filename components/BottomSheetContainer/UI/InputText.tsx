@@ -1,31 +1,88 @@
-import { TextInput } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import React, { useState } from "react";
 
-export default function InputText() {
+export default function InputText({
+  label,
+  value,
+  onChange,
+  icon,
+  placeholder,
+}: {
+  label:string,
+  value: string;
+  icon?: JSX.Element | string;
+  onChange: () => void;
+  placeholder?: string;
+}) {
+  const [focused, setFocused] = useState(false);
   return (
-    <View>
-      <Text style={styles.labelText}>TextInput</Text>
-      <TextInput
-        mode="outlined"
-        style={{ width: "100%", height: 40, backgroundColor: "#DEFFB71D" }}
-        underlineStyle={{
-          borderRadius: 60,
-          borderWidth: 1,
-          borderColor: "#CEC5C5",
+    <View style={{ width: "100%", height: 70, gap: 4 }}>
+      <Text style={styles.labelText}>{label}</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          backgroundColor: "#E4E2E2",
+          gap: 8,
+          flex: 1,
+          paddingHorizontal: focused ? 9 : 10,
+          borderRadius: 10,
+          borderWidth: focused ? 1 : 0,
         }}
-        outlineStyle={{ borderRadius: 10, borderWidth: 1 }}
-        activeOutlineColor="#450559"
-        outlineColor="#AEAAAA"
-      />
+      >
+        {icon && (
+          <View
+            style={{
+              height: "100%",
+              width: 30,
+              alignItems: "center",
+              paddingVertical: 10,
+              gap: 8,
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                fontFamily: "JakaraExtraBold",
+                includeFontPadding: false,
+              }}
+            >
+              {icon}
+            </Text>
+            <View
+              style={{ width: 2, backgroundColor: "#777474", height: "100%" }}
+            />
+          </View>
+        )}
+        <TextInput
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          style={{
+            width: "100%",
+            height: "100%",
+            includeFontPadding: false,
+            fontSize: 18,
+            fontFamily: "JakaraExtraBold",
+          }}
+          onFocus={() => {
+            setFocused(true);
+          }}
+          onBlur={() => {
+            setFocused(false);
+          }}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   labelText: {
-    fontFamily: 'JakaraExtraBold',
-    color: "#656565"
+    fontFamily: "JakaraExtraBold",
+    color: "#656565",
   },
 });

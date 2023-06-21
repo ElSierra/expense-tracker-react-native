@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DefaultTheme, PaperProvider } from "react-native-paper";
+import { DefaultTheme, PaperProvider, useTheme } from "react-native-paper";
 import App from "./AppComponent";
 
 import { useFonts } from "expo-font";
@@ -11,12 +11,12 @@ import { View, Text, Appearance, useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 
-
 SplashScreen.preventAutoHideAsync();
 export default function Main() {
   const [fontsLoaded] = useFonts({
     PantonExtraBold: require("./assets/fonts/Panton.ttf"),
     JakaraExtraBold: require("./assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
+    JakaraMedium: require("./assets/fonts/PlusJakartaSans-Medium.ttf"),
     JakaraSemiBold: require("./assets/fonts/PlusJakartaSans-SemiBold.ttf"),
     RobotoMedium: require("./assets/fonts/Roboto-Medium.ttf"),
     RobotoBold: require("./assets/fonts/Roboto-Bold.ttf"),
@@ -32,14 +32,14 @@ export default function Main() {
     return null;
   }
 
+  
 
- 
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <PaperProvider >
-      
+      <PaperProvider
+       
+      >
         <Provider store={store}>
-          
           <App />
         </Provider>
       </PaperProvider>

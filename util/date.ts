@@ -16,8 +16,15 @@ export function getFormatDate(date: Date): string {
   return formatDistance(date, new Date(), { addSuffix: true });
 }
 
+export function getLessThanDate(date: Date, days: number) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
+}
 
-export function getLessThanDate(date: Date, days: number){
-
- return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days)
+export function isDateToday(date: Date): boolean {
+  const today = new Date();
+  return (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  );
 }
