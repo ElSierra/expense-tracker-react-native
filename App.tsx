@@ -35,7 +35,7 @@ export default function Main() {
   
 
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
+    <NavigationContainer onReady={onLayoutRootView} >
       <PaperProvider
        
       >

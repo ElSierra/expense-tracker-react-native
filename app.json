@@ -8,13 +8,15 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "image": "...",
+        "resizeMode": "cover",
+        "backgroundColor": "#000000"
+      }
     },
-    "assetBundlePatterns": [
-      "**/*",
-      "assets/images"
-    ],
+    "assetBundlePatterns": ["**/*", "assets/images"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.hojoisaac.expensetracker"

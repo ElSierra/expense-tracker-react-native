@@ -28,13 +28,13 @@ export const AnimatedButton = ({
     if (isVisible) {
       Animated.timing(animation, {
         toValue: 1,
-        duration: 500,
+        duration: 200,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(animation, {
         toValue: 0,
-        duration: 500,
+        duration: 200,
         useNativeDriver: true,
       }).start(() => {
         console.log("dddd");

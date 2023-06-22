@@ -5,10 +5,12 @@ export default function Chart({
   height,
   width,
   withHorizontalLabels,
+  amountPerDay
 }: {
   height: number;
   width: number;
   withHorizontalLabels: boolean;
+  amountPerDay: number[]
 }) {
   return (
     <View>
@@ -25,7 +27,7 @@ export default function Chart({
           ],
           datasets: [
             {
-              data: [500, 200, 800, 400, 600, 600, 900],
+              data: amountPerDay|| [0],
             },
           ],
         }}

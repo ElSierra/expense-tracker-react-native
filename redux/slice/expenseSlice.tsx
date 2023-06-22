@@ -7,7 +7,7 @@ type ExpenseState = {
   expenses: Expenses[];
 };
 type ExpenseAddState = {
-  category: Category;
+  category: Category | null;
   name: string;
   amount: number;
   date: Date;

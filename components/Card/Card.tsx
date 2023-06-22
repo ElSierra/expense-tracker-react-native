@@ -2,23 +2,35 @@ import { ImageBackground, View, Text, StyleSheet } from "react-native";
 import Chart from "../Expenses/Chart";
 import { Dimensions } from "react-native";
 
-export default function Card() {
+export default function Card({
+  amountPerDay,
+  totalSpent,
+}: {
+  amountPerDay: number[];
+  totalSpent: string;
+}) {
   const width = Dimensions.get("window").width;
   return (
-    <View style={{width, alignItems: "center"}}>
-    <ImageBackground
-      resizeMode="cover"
-      imageStyle={{ opacity: 1 }}
-      style={style.frontBox}
-      source={require("../../assets/images/box-cut.png")}
-    >
-      <Text style={style.header}>Total Spent (This week)</Text>
+    <View style={{ width, alignItems: "center" }}>
+      <ImageBackground
+        resizeMode="cover"
+        imageStyle={{ opacity: 1 }}
+        style={style.frontBox}
+        source={require("../../assets/images/box-cut.png")}
+      >
+        <Text style={style.header}>Total Spent (This week)</Text>
 
-      <Text style={style.money}>₦50,000</Text>
-      <View style={[style.chartContainer, { width: width * 0.75 }]}>
-        <Chart height={100} width={width * 0.7} withHorizontalLabels={false} />
-      </View>
-    </ImageBackground></View>
+        <Text style={style.money}>{totalSpent || '₦0'}</Text>
+        <View style={[style.chartContainer, { width: width * 0.75 }]}>
+          <Chart
+            height={100}
+            width={width * 0.7}
+            withHorizontalLabels={false}
+            amountPerDay={amountPerDay}
+          />
+        </View>
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -39,7 +51,7 @@ const style = StyleSheet.create({
   frontBox: {
     height: 210,
     overflow: "hidden",
-   aspectRatio: 6442 / 3771,
+    aspectRatio: 6442 / 3771,
     padding: 20,
     marginTop: 50,
   },

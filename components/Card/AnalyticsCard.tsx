@@ -13,7 +13,13 @@ import MenuComponents from "../MenuComponents";
 import { useWindowDimensions } from "react-native";
 import Card from "./Card";
 
-export default function AnalyticsCard() {
+export default function AnalyticsCard({
+  amountPerDay,
+  totalSpent,
+}: {
+  amountPerDay: number[];
+  totalSpent: string;
+}) {
   const { height, width } = useWindowDimensions();
   const theme = useColorScheme();
 
@@ -36,7 +42,7 @@ export default function AnalyticsCard() {
         snapToInterval={width} //your element width
         snapToAlignment={"center"}
       >
-        <Card />
+        <Card amountPerDay={amountPerDay} totalSpent={totalSpent} />
         <Card />
         <Card />
         <Card />

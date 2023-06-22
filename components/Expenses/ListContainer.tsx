@@ -18,6 +18,8 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
       return "🌐";
     } else if (expense.category === "Movie") {
       return "🍿";
+    } else if (expense.category === "Transport") {
+      return "🚗";
     } else {
       return "📦";
     }
@@ -30,13 +32,21 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
     maximumFractionDigits: 2,
   }).format(expense.amount);
 
+  const trimExpName = () => {
+    if (expense.name.length > 20) {
+      return `${expense.name.slice(0, 20)} ...`;
+    }else {
+      return expense.name
+    }
+  };
+
   // const openModalPressed = () => {
   //   dispatch(openModalEdit({ id: expense.id }));
   // };
   return (
     <View style={styles.touchable}>
       <TouchableRipple
-        rippleColor={!isDarkTheme ?"#E3CBCB": "#000000"}
+        rippleColor={!isDarkTheme ? "#E3CBCB" : "#000000"}
         style={{ backgroundColor: isDarkTheme ? "#161b22" : "white" }}
         onPress={() => {
           dispatch(openModalEdit({ id: expense.id }));
@@ -47,7 +57,7 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
             <View
               style={[
                 styles.emojiContainer,
-                { backgroundColor: isDarkTheme ? "#3F3F3F" : "white" },
+                { backgroundColor: isDarkTheme ? "#3F3F3F" : "#f8f9fb" },
               ]}
             >
               <Text style={styles.emojiTextStyle}>{renderEmoji()}</Text>
@@ -59,7 +69,7 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
                   { color: isDarkTheme ? "white" : "black" },
                 ]}
               >
-                {expense.name}
+                {trimExpName()}
               </Text>
               <Text style={styles.textFoot}>{getFormatDate(expense.date)}</Text>
             </View>

@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { View, Text, StyleSheet, BackHandler, Pressable } from "react-native";
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetFooter,
+} from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetProp } from "../types/navigation";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { closeModal } from "../redux/slice/modalSlice";
 import CustomBackground from "../components/BottomSheet/CustomBg";
 import EditButtons from "../components/UI/EditButtons";
-import AddButtons from "../components/UI/AddButtons";
+import AddButtons from "../components/BottomSheetContainer/UI/AddButtons";
 import EditComponent from "../components/BottomSheetContainer/EditComponent";
 import AddComponent from "../components/BottomSheetContainer/AddComponent";
 
@@ -74,7 +77,6 @@ const BottomSheetScreen = () => {
     return () => backHandler.remove();
   }, []);
 
-  
   const renderFooter = (props: any) => {
     console.log("isEdit", isEditing);
 
@@ -107,47 +109,45 @@ const BottomSheetScreen = () => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
           <BottomSheet
-           ref={bottomSheetRef}
-        
-           footerComponent={renderFooter}
-           handleIndicatorStyle={{ display: "none" }}
-           index={-1}
- 
-           enablePanDownToClose
-           snapPoints={snapPoints}
-           backgroundComponent={CustomBackground}
-           backdropComponent={renderBackdrop}
-           onChange={handleSheetChanges}
+            ref={bottomSheetRef}
+            footerComponent={renderFooter}
+            handleIndicatorStyle={{ display: "none" }}
+            index={-1}
+            enablePanDownToClose
+            snapPoints={snapPoints}
+            backgroundComponent={CustomBackground}
+            backdropComponent={renderBackdrop}
+            onChange={handleSheetChanges}
           >
-             <View style={styles.contentScreen}>
-            <Pressable
-              style={({ pressed }) => [
-                styles.handleContainer,
-                {
-                  backgroundColor: !pressed ? "#062C032B" : "black",
-                },
-              ]}
-            >
-              <View />
-            </Pressable>
+            <View style={styles.contentScreen}>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.handleContainer,
+                  {
+                    backgroundColor: !pressed ? "#062C032B" : "black",
+                  },
+                ]}
+              >
+                <View />
+              </Pressable>
 
-            <View
-              style={{
-                height: "100%",
-                width: "100%",
-                paddingHorizontal: 20,
-                paddingTop: 5,
-              }}
-            >
-              <View style={styles.contentContainer}>
-              {ModalState.id ? (
-            <EditComponent />
-          ) : !ModalState.id && ModalState.isOpen ? (
-            <AddComponent />
-          ) : null}
+              <View
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  paddingHorizontal: 20,
+                  paddingTop: 5,
+                }}
+              >
+                <View style={styles.contentContainer}>
+                  {ModalState.id ? (
+                    <EditComponent />
+                  ) : !ModalState.id && ModalState.isOpen ? (
+                    <AddComponent />
+                  ) : null}
+                </View>
               </View>
             </View>
-          </View>
           </BottomSheet>
         </View>
       </GestureHandlerRootView>
@@ -191,8 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-
 export default BottomSheetScreen;
-

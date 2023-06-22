@@ -1,8 +1,16 @@
-export type Category = "Food" | "Transport" | "Movie" | "Internet" | "Others";
+export type Category =
+  | "Food"
+  | "Transport"
+  | "Movie"
+  | "Internet"
+  | "Others"
+  | "Club"
+  | "Rent"
+  | "Savings";
 
 export class Expenses {
   id: string;
-  category: Category;
+  category: Category | null;
   name: string;
   amount: number;
   date: Date;

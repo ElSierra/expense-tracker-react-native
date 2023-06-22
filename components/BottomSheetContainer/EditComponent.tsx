@@ -20,25 +20,36 @@ import { useRef, useState } from "react";
 import { categoryList } from "../../data/category";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { DatePickerAndroid } from "./UI/DatePicker";
-
+import { Category } from "../../data/model";
+import { AnimatedButton } from "./UI/AnimateButton";
+import EditButtons from "./UI/EditButtons";
+import { updateExpense } from "../../redux/slice/expenseSlice";
+import { closeModal } from "../../redux/slice/modalSlice";
+import { AnimatedView } from "./UI/Animate";
 
 export default function EditComponent() {
   const width = Dimensions.get("screen").width;
   const modalState = useAppSelector((state) => state.modal);
   const expense = useAppSelector((state) => state.expense.expenses);
+  const dispatch = useAppDispatch();
   console.log(modalState.id);
-  const chipRef = useRef(null);
 
-  const pageExpense = expense.filter((exp) => {
+  const pageExpense = expense?.filter((exp) => {
     return exp.id === modalState.id;
   });
 
   const [content, setContent] = useState(() => {
     return {
-      expName: pageExpense[0]?.name,
-      category: pageExpense[0]?.category,
-      amount: pageExpense[0]?.amount,
+      expName: { value: pageExpense[0]?.name, isValid: true },
+      amount: { value: pageExpense[0]?.amount?.toString(), isValid: true },
     };
+  });
+
+  const [category, setCategory] = useState<{
+    value: Category | null;
+    isValid: boolean;
+  }>(() => {
+    return { value: pageExpense[0]?.category, isValid: true };
   });
 
   const theme = useColorScheme();
@@ -49,25 +60,97 @@ export default function EditComponent() {
     const currentDate = selectedDate;
     setDate(currentDate);
   };
+  const handleChange = (inputIdentifier: string, enteredText: string) => {
+    setContent((currentInput) => {
+      return {
+        ...currentInput,
+        [inputIdentifier]: { value: enteredText, isValid: true },
+      };
+    });
+  };
 
+  const handlePressed = (inputIdentifier: Category) => {
+    console.log(
+      "🚀 ~ file: EditComponent.tsx:63 ~ handlePressed ~ inputIdentifier:",
+      inputIdentifier
+    );
+    if (category.value === inputIdentifier) {
+      console.log("I am the same");
+      return setCategory({ value: null, isValid: false });
+    }
+    setCategory({ value: inputIdentifier, isValid: true });
+  };
+  const handleClose = () => {
+    setCategory({ value: null, isValid: false });
+  };
+  const updateExpenseHandler = () => {
+    const amountIsValid =
+      !isNaN(Number(content.amount.value)) && Number(content.amount.value) > 0;
+    const expNameIsValid = content.expName.value.trim().length > 0;
+    const categoryIsValid = typeof category.value === "string";
+    setContent((content) => {
+      return {
+        amount: { value: content.amount.value, isValid: amountIsValid },
+        expName: { value: content.expName.value, isValid: expNameIsValid },
+      };
+    });
+    setCategory((category) => {
+      return {
+        value: category.value,
+        isValid: categoryIsValid,
+      };
+    });
+    if (!amountIsValid || !expNameIsValid || !categoryIsValid) {
+      return;
+    }
+    dispatch(
+      updateExpense({
+        id: modalState.id || "",
+        expense: {
+          name: content.expName.value,
+          amount: Number(content.amount.value),
+          category: category.value,
+          date,
+        },
+      })
+    );
+    dispatch(closeModal());
+    console.log("✅", content, category, date);
+  };
+
+  const inValidForm =
+    !content.amount.isValid || !content.expName.isValid || !category.isValid;
   return (
     <View style={styles.screen}>
-      <HeaderTextClose header="Edit" />
+      <HeaderTextClose header="Edit Expense" />
       <View style={{ width: "100%", height: "100%", gap: 10 }}>
+        <AnimatedView isVisible={inValidForm}>
+          <Text style={{ textAlign: "center", color: "red" }}>
+            Error in inputs
+          </Text>
+        </AnimatedView>
         <InputText
-          value={content.expName || ""}
-          onChange={() => {}}
+          value={content.expName.value || ""}
+          invalid={!content.expName.isValid}
+          onChange={handleChange.bind(null, "expName")}
           label="Expense Name"
         />
         <InputText
           icon={"₦"}
-          value={content.amount?.toString() || ""}
-          onChange={() => {}}
+          textInputConfig={{ keyboardType: "number-pad" }}
+          invalid={!content.amount.isValid}
+          value={content.amount.value || ""}
+          onChange={handleChange.bind(null, "amount")}
           label="Amount"
         />
 
         <View style={{ height: 60, width: width, paddingLeft: 2, gap: 5 }}>
-          <Text style={{ fontFamily: "JakaraExtraBold", color: "#656565" }}>
+          <Text
+            style={{
+              fontFamily: "JakaraExtraBold",
+              color: category.isValid ? "#7E7C7C" : "red",
+            }}
+          >
             Select a category
           </Text>
           <ScrollView
@@ -76,11 +159,14 @@ export default function EditComponent() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 6 }}
           >
-            {categoryList.map((category) => (
+            {categoryList.map((cat) => (
               <ChipContainer
-                key={category.type}
-                color={isDarkTheme ? "#FFFFFF" : category.color}
-                text={category.type}
+                handlePressed={handlePressed.bind(null, cat.type)}
+                handleClose={handleClose}
+                key={cat.type}
+                pressed={cat.type === category.value}
+                color={isDarkTheme ? "#FFFFFF" : cat.color}
+                text={cat.type}
               />
             ))}
           </ScrollView>
@@ -90,9 +176,11 @@ export default function EditComponent() {
             Date
           </Text>
           <DatePickerAndroid date={date} onChange={onChange} />
-
         </View>
       </View>
+      <AnimatedButton isVisible={modalState.isOpen && modalState.id !== null}>
+        <EditButtons updateExpenseHandler={updateExpenseHandler} />
+      </AnimatedButton>
     </View>
   );
 }

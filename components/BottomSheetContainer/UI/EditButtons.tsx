@@ -1,11 +1,11 @@
 import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
-import { ArrowRight, TrashIcon } from "../icons";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks/hooks";
-import { deleteExpense, updateExpense } from "../../redux/slice/expenseSlice";
-import { closeModal } from "../../redux/slice/modalSlice";
+import { ArrowRight, TrashIcon } from "../../icons";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
+import { deleteExpense, updateExpense } from "../../../redux/slice/expenseSlice";
+import { closeModal } from "../../../redux/slice/modalSlice";
 
-export default function EditButtons() {
+export default function EditButtons({updateExpenseHandler}: {updateExpenseHandler: ()=> void}) {
   const dispatch = useAppDispatch();
   const modalState = useAppSelector((state) => state.modal);
 
@@ -14,20 +14,7 @@ export default function EditButtons() {
     dispatch(deleteExpense({ id: modalState.id || "" }));
     dispatch(closeModal());
   };
-  const updateExpenseHandler = () => {
-    dispatch(
-      updateExpense({
-        id: modalState.id || "",
-        expense: {
-          name: "Syscode",
-          amount: 1000,
-          category: "Internet",
-          date: new Date(),
-        },
-      })
-    );
-    dispatch(closeModal());
-  };
+ 
   return (
     <View style={styles.buttonContainer}>
       <Button

@@ -18,7 +18,7 @@ export default function AddNewExpenseButton({
     <View style={style.touchable}>
       <TouchableRipple
         onPress={onPress}
-        style={{ backgroundColor: isDarkTheme ? "#161b22" : "#FFCECE" }}
+        style={{ backgroundColor: isDarkTheme ? "#161b22" : "#ADC5B6" }}
       >
         <AddIcon color={isDarkTheme ? "white" : "#00465B"} size={40} />
       </TouchableRipple>

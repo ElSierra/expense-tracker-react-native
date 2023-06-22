@@ -67,8 +67,8 @@ function BottomTabNavigator() {
 
           shadowRadius: 200,
           elevation: 18,
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30,
+          borderTopLeftRadius: isDarkTheme? 0 :15,
+          borderTopRightRadius: isDarkTheme? 0 :15,
         },
         // headerTitleStyle: {
         //   paddingHorizontal: 10,
@@ -132,6 +132,7 @@ export default function App() {
         >
           <Stack.Navigator
             screenOptions={{
+              
               contentStyle: {
                 backgroundColor: isDarkTheme ? "#000000" : "#FFFFFF00",
               },

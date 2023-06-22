@@ -1,23 +1,22 @@
 import { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, GestureResponderEvent } from "react-native";
 import { Chip } from "react-native-paper";
 import { CloseCircleIcon } from "../../icons";
+import { Category } from "../../../data/model";
 
 export default function ChipContainer({
   color,
   text,
+  handlePressed,
+  handleClose,
+  pressed,
 }: {
   color: string;
   text: string;
+  handlePressed: (e: GestureResponderEvent, category?: Category) => void;
+  handleClose: () => void;
+  pressed: boolean;
 }) {
-  const [pressed, setPressed] = useState(false);
-
-  const handlePressed = () => {
-    setPressed(!pressed);
-  };
-  const handleClose = () => {
-    setPressed(false);
-  };
   return (
     <Chip
       icon={() => null}
