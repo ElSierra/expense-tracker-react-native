@@ -1,10 +1,18 @@
-import { View, Text, StyleSheet, Keyboard, useColorScheme } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Keyboard,
+  useColorScheme,
+  ToastAndroid,
+} from "react-native";
 import IconButton from "./IconButton";
 import { CloseCircleIcon } from "../icons";
 import { useAppDispatch } from "../../redux/hooks/hooks";
 import { closeModal, openModalAdd } from "../../redux/slice/modalSlice";
 import { useEffect, useState } from "react";
 import { doNothing } from "../../redux/slice/expenseSlice";
+import Toast from "react-native-toast-message";
 
 export default function HeaderTextClose({ header }: { header: string }) {
   const dispatch = useAppDispatch();
@@ -57,9 +65,15 @@ export default function HeaderTextClose({ header }: { header: string }) {
               //   dispatch(closeModal());
               // }
               if (isKeyboardVisible) {
-                Keyboard.dismiss()
-                dispatch(doNothing());
-                dispatch(closeModal());
+                Toast.show({
+                  type: "presstoClose",
+                  text1: " to dismiss",
+                });
+
+                return Keyboard.dismiss();
+              }
+              if (!isKeyboardVisible) {
+                return dispatch(closeModal());
               }
 
               dispatch(closeModal());
@@ -80,7 +94,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 0,
   },
   headerText: {
     fontFamily: "JakaraExtraBold",

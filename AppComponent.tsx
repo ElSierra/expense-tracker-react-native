@@ -14,7 +14,7 @@ import AddNewExpenseButton from "./components/UI/AddNewExpenseButton";
 import { BackIcon, CalendarIcon, HomeIcon } from "./components/icons";
 import { BottomSheetContainer } from "./components/BottomSheet/BottomSheet";
 import { useCallback, useRef } from "react";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useAppDispatch } from "./redux/hooks/hooks";
 import { openModalAdd } from "./redux/slice/modalSlice";
@@ -32,6 +32,8 @@ import {
 import IconButton from "./components/UI/IconButton";
 import BottomSheetScreen from "./screens/BottomSheetScreen";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "./components/UI/CustomToastConfig";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 // const Tab = createBottomTabNavigator();
 
@@ -55,7 +57,10 @@ function BottomTabNavigator() {
           backgroundColor: "transparent",
         },
 
-        tabBarAndroidRipple: { color: !isDarkTheme?"#DED2FF": "#212020", borderless: true },
+        tabBarAndroidRipple: {
+          color: !isDarkTheme ? "#DED2FF" : "#212020",
+          borderless: true,
+        },
         tabBarShowLabel: false,
         tabBarActiveTintColor: isDarkTheme ? "white" : "black",
         tabBarStyle: {
@@ -67,8 +72,8 @@ function BottomTabNavigator() {
 
           shadowRadius: 200,
           elevation: 18,
-          borderTopLeftRadius: isDarkTheme? 0 :15,
-          borderTopRightRadius: isDarkTheme? 0 :15,
+          borderTopLeftRadius: isDarkTheme ? 0 : 15,
+          borderTopRightRadius: isDarkTheme ? 0 : 15,
         },
         // headerTitleStyle: {
         //   paddingHorizontal: 10,
@@ -121,6 +126,10 @@ export default function App() {
         style={isDarkTheme ? "light" : "dark"}
         backgroundColor="transparent"
       />
+      <View style={{ position: "absolute", width: "100%", zIndex: 999 }}>
+        <Toast config={toastConfig} />
+      </View>
+      <BottomSheetModalProvider>
       <BottomSheetContainer>
         {/* {<BottomSheetScreen/>} */}
 
@@ -132,7 +141,6 @@ export default function App() {
         >
           <Stack.Navigator
             screenOptions={{
-              
               contentStyle: {
                 backgroundColor: isDarkTheme ? "#000000" : "#FFFFFF00",
               },
@@ -188,10 +196,12 @@ export default function App() {
               options={({ navigation }: ProfileProp) => {
                 return {
                   animation: "slide_from_left",
+                  animationDuration: 1,
                   headerShadowVisible: false,
                   headerTitleAlign: "center",
-                  headerTintColor: isDarkTheme? "white": "black",
+                  headerTintColor: isDarkTheme ? "white" : "black",
                   headerBackVisible: false,
+                  
                   headerLeft: ({ tintColor, canGoBack }) => (
                     <IconButton
                       size={40}
@@ -207,7 +217,7 @@ export default function App() {
                   headerTitleStyle: {
                     fontFamily: "JakaraExtraBold",
                     fontSize: 20,
-                    color: isDarkTheme? "white": "black"
+                    color: isDarkTheme ? "white" : "black",
                   },
                   headerTransparent: true,
                 };
@@ -216,7 +226,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </ImageBackground>
-      </BottomSheetContainer>
+      </BottomSheetContainer></BottomSheetModalProvider>
     </>
   );
 }

@@ -9,9 +9,9 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#051a5f",
       "dark": {
-        "image": "...",
+        "image": "./assets/splash.png",
         "resizeMode": "cover",
         "backgroundColor": "#000000"
       }

@@ -22,7 +22,7 @@ export default function Card({
 
         <Text style={style.money}>{totalSpent || '₦0'}</Text>
         <View style={[style.chartContainer, { width: width * 0.75 }]}>
-          <Chart
+        <Chart
             height={100}
             width={width * 0.7}
             withHorizontalLabels={false}

@@ -10,6 +10,7 @@ import { useCallback } from "react";
 import { View, Text, Appearance, useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 export default function Main() {
@@ -32,13 +33,9 @@ export default function Main() {
     return null;
   }
 
-  
-
   return (
-    <NavigationContainer onReady={onLayoutRootView} >
-      <PaperProvider
-       
-      >
+    <NavigationContainer onReady={onLayoutRootView}>
+      <PaperProvider>
         <Provider store={store}>
           <App />
         </Provider>

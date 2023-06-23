@@ -4,10 +4,11 @@ import ExpenseComponent from "../components/Expenses/ExpenseComponent";
 import { EXPENSE_DATA } from "../data/data";
 import ChartFull from "../components/Expenses/ChartFull";
 import { useAppSelector } from "../redux/hooks/hooks";
-
+import { useBottomSheet } from '@gorhom/bottom-sheet';
 export default function AllExpenses() {
   const expensesList = useAppSelector((state) => state.expense.expenses);
   const newExpense = [...expensesList]
+  
   return (
     <View style={styles.root}>
       <View style={styles.allExpensesContainer}>
@@ -20,6 +21,7 @@ export default function AllExpenses() {
           ListHeaderComponent={<ChartFull />}
         />
       </View>
+
     </View>
   );
 }
@@ -45,3 +47,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+

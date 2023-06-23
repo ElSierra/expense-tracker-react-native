@@ -27,7 +27,7 @@ export default function Chart({
           ],
           datasets: [
             {
-              data: amountPerDay|| [0],
+              data: amountPerDay.length> 0 ? amountPerDay : [0]
             },
           ],
         }}

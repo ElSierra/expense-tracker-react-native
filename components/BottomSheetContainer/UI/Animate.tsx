@@ -37,6 +37,7 @@ export const AnimatedView = ({
         useNativeDriver: true,
       }).start();
     }
+    
    
   }, [isVisible]);
 

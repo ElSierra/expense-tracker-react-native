@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { closeModal } from "../redux/slice/modalSlice";
 import CustomBackground from "../components/BottomSheet/CustomBg";
-import EditButtons from "../components/UI/EditButtons";
+
 import AddButtons from "../components/BottomSheetContainer/UI/AddButtons";
 import EditComponent from "../components/BottomSheetContainer/EditComponent";
 import AddComponent from "../components/BottomSheetContainer/AddComponent";
@@ -77,22 +77,6 @@ const BottomSheetScreen = () => {
     return () => backHandler.remove();
   }, []);
 
-  const renderFooter = (props: any) => {
-    console.log("isEdit", isEditing);
-
-    return (
-      <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={styles.footerContainer}>
-          {ModalState.id ? (
-            <EditButtons />
-          ) : !ModalState.id && ModalState.isOpen ? (
-            <AddButtons />
-          ) : null}
-        </View>
-      </BottomSheetFooter>
-    );
-  };
-
   return (
     <View
       style={{
@@ -110,8 +94,8 @@ const BottomSheetScreen = () => {
         <View style={styles.container}>
           <BottomSheet
             ref={bottomSheetRef}
-            footerComponent={renderFooter}
             handleIndicatorStyle={{ display: "none" }}
+            animateOnMount 
             index={-1}
             enablePanDownToClose
             snapPoints={snapPoints}

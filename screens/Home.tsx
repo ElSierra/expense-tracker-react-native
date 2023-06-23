@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Button } from "react-native";
 
 import AnalyticsCard from "../components/Card/AnalyticsCard";
 
@@ -11,6 +11,7 @@ import {
   getLessThanDate,
 } from "../util/date";
 import { FadeInView } from "../components/FadeInView";
+import Toast from "react-native-toast-message";
 
 export default function Home() {
   const expenseList = useAppSelector((state) => state.expense.expenses);
@@ -24,7 +25,7 @@ export default function Home() {
     "🚀 ~ file: Home.tsx:19 ~ Home ~ thisweekexpense:",
     thisweekexpense
   );
-  const expenseSum = thisweekexpense.reduce(
+  const expenseSum = thisweekexpense?.reduce(
     (acc, curr) => acc + curr.amount,
     0
   );
@@ -34,15 +35,18 @@ export default function Home() {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(expenseSum);
-
-  const amountperDay = getAmountsPerDay(thisweekexpense);
-  console.log("🚀 ~ file: Home.tsx:32 ~ Home ~ amountperDay:", amountperDay);
+  let amountperDay;
+  if (thisweekexpense.length > 0) {
+    amountperDay = getAmountsPerDay(thisweekexpense);
+    console.log("🚀 ~ file: Home.tsx:32 ~ Home ~ amountperDay:", amountperDay);
+  }
 
   return (
     <FadeInView style={styles.root}>
       <View>
+        
         <AnalyticsCard
-          amountPerDay={amountperDay}
+          amountPerDay={amountperDay || [0]}
           totalSpent={formattedExpenseSum.split(".")[0]}
         />
       </View>
@@ -52,6 +56,7 @@ export default function Home() {
           periodName="Last 7 days"
         />
       </View>
+    
     </FadeInView>
   );
 }

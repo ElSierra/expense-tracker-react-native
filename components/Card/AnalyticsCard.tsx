@@ -43,9 +43,7 @@ export default function AnalyticsCard({
         snapToAlignment={"center"}
       >
         <Card amountPerDay={amountPerDay} totalSpent={totalSpent} />
-        <Card />
-        <Card />
-        <Card />
+  
       </ScrollView>
     </View>
   );

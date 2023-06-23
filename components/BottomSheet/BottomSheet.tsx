@@ -4,18 +4,12 @@ import React, {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
-import {
-  View,
- 
-  StyleSheet,
-
-  BackHandler,
-  useColorScheme,
-} from "react-native";
+import { View, StyleSheet, BackHandler, useColorScheme } from "react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
-
+  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -26,6 +20,8 @@ import { closeModal } from "../../redux/slice/modalSlice";
 import EditComponent from "../BottomSheetContainer/EditComponent";
 
 import AddComponent from "../BottomSheetContainer/AddComponent";
+import Toast from "react-native-toast-message";
+import { AnimatedViewBottomSheet } from "../BottomSheetContainer/UI/AnimatedView";
 
 export const BottomSheetContainer = ({
   children,
@@ -39,13 +35,14 @@ export const BottomSheetContainer = ({
 
   const theme = useColorScheme();
   const isDarkTheme = theme === "dark";
+  const [isOpen, setIsOpen] = useState(false)
 
   if (ModalState.id && ModalState.isOpen) {
     sheetRef.current?.snapToIndex(3);
   } else if (!ModalState.id && ModalState.isOpen) {
     sheetRef.current?.snapToIndex(3);
   }
- 
+
   const handleSheetChanges = useCallback((index: number) => {
     console.log(
       "🚀 ~ file: BottomSheet.tsx:42 ~ handleSheetChanges ~ index:",
@@ -54,6 +51,11 @@ export const BottomSheetContainer = ({
 
     if (index === -1) {
       dispatch(closeModal());
+      setIsOpen(false)
+    }
+
+    if (index>0){
+      setIsOpen(true)
     }
   }, []);
 
@@ -69,8 +71,7 @@ export const BottomSheetContainer = ({
           opacity={0.3}
           pressBehavior={"close"}
           disappearsOnIndex={-1}
-          appearsOnIndex={2}
-        
+          appearsOnIndex={0}
         />
       </>
     ),
@@ -100,16 +101,18 @@ export const BottomSheetContainer = ({
 
           <BottomSheet
             ref={sheetRef}
-            animateOnMount={true}
+            animationConfigs={{ duration: 400,}}
             handleIndicatorStyle={{ display: "none" }}
             index={-1}
+            android_keyboardInputMode="adjustResize"
+            keyboardBehavior="fillParent"
             enablePanDownToClose
             snapPoints={snapPoints}
             backgroundComponent={CustomBackground}
             backdropComponent={renderBackdrop}
             onChange={handleSheetChanges}
           >
-            <View
+            <BottomSheetView
               style={[
                 styles.contentScreen,
                 { backgroundColor: isDarkTheme ? "#161b22" : "white" },
@@ -134,17 +137,15 @@ export const BottomSheetContainer = ({
                   paddingTop: 15,
                 }}
               >
-                <View style={styles.contentContainer}>
+                <AnimatedViewBottomSheet isVisible={isOpen}>
                   {ModalState.id ? (
                     <EditComponent />
                   ) : !ModalState.id && ModalState.isOpen ? (
                     <AddComponent />
                   ) : null}
-
-              
-                </View>
+                </AnimatedViewBottomSheet>
               </View>
-            </View>
+            </BottomSheetView>
           </BottomSheet>
         </View>
       </GestureHandlerRootView>
