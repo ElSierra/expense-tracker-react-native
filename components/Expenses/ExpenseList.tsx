@@ -1,8 +1,17 @@
 import { FlashList } from "@shopify/flash-list";
-import React, { ReactNode, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import ListContainer from "./ListContainer";
 import { Expenses } from "../../data/model";
 import { FlatList, LayoutAnimation, RefreshControl, View } from "react-native";
+import { fetchExpenses } from "../../util/http";
+import { useAppDispatch } from "../../redux/hooks/hooks";
+import { setExpense } from "../../redux/slice/expenseSlice";
 
 export default function ExpenseList({
   expenses,
@@ -12,13 +21,15 @@ export default function ExpenseList({
   ListHeaderComponent?: JSX.Element;
 }) {
   const [refreshing, setRefreshing] = React.useState(false);
-const memoExpense = useMemo(() => expenses, [expenses])
+  const dispatch = useAppDispatch();
+  const memoExpense = useMemo(() => expenses, [expenses]);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
+    async function getExpenses() {
+      const expenses = await fetchExpenses();
+      dispatch(setExpense(expenses));
+    }
+    getExpenses();
   }, []);
 
   return (

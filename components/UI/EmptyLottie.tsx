@@ -6,6 +6,7 @@ export default function EmptyLottie() {
   
   useEffect(() => {
     animationRef.current?.play()
+    
   }, [])
 
   return (

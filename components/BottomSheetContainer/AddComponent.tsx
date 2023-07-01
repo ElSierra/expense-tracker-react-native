@@ -26,10 +26,13 @@ import { Category } from "../../data/model";
 import { closeModal } from "../../redux/slice/modalSlice";
 import { addExpense } from "../../redux/slice/expenseSlice";
 import { AnimatedView } from "./UI/Animate";
+import { storeExpense } from "../../util/http";
+import Modal from "react-native-modal";
+import LoadingOverlay from "../UI/LoadingOverlay";
 
 export default function AddComponent() {
   const width = Dimensions.get("screen").width;
-
+  const [isFetching, setIsFetching] = useState(false);
   const expense = useAppSelector((state) => state.expense.expenses);
   const dispatch = useAppDispatch();
   const modalState = useAppSelector((state) => state.modal);
@@ -88,7 +91,7 @@ export default function AddComponent() {
     setCategory({ value: null, isValid: false });
   };
 
-  const updateExpenseHandler = () => {
+  const updateExpenseHandler = async () => {
     const amountIsValid =
       !isNaN(Number(content.amount.value)) && Number(content.amount.value) > 0;
     const expNameIsValid = content.expName.value.trim().length > 0;
@@ -108,19 +111,39 @@ export default function AddComponent() {
     if (!amountIsValid || !expNameIsValid || !categoryIsValid) {
       return;
     }
-    dispatch(closeModal());
-    dispatch(
-      addExpense({
+
+    setIsFetching(true);
+    if (category.value !== null) {
+      const id = await storeExpense({
         name: content.expName.value,
         amount: Number(content.amount.value),
         category: category.value,
         date: date,
-      })
-    );
+      });
+      console.log(
+        "🚀 ~ file: AddComponent.tsx:121 ~ updateExpenseHandler ~ id:",
+        id
+      );
+
+      if (id)
+        dispatch(
+          addExpense({
+            id: "aasaaasasas",
+            name: content.expName.value,
+            amount: Number(content.amount.value),
+            category: category.value,
+            date: date,
+          })
+        );
+      dispatch(closeModal());
+    }
   };
 
   const inValidForm =
     !content.amount.isValid || !content.expName.isValid || !category.isValid;
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
   return (
     <View style={styles.screen}>
       <HeaderTextClose header="Add Expense" />

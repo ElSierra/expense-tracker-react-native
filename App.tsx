@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DefaultTheme, PaperProvider, useTheme } from "react-native-paper";
-import App from "./AppComponent";
+import App from "./App/AppComponent";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";

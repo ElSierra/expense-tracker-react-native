@@ -71,7 +71,7 @@ export const BottomSheetContainer = ({
           opacity={0.3}
           pressBehavior={"close"}
           disappearsOnIndex={-1}
-          appearsOnIndex={0}
+          appearsOnIndex={3}
         />
       </>
     ),
@@ -101,7 +101,7 @@ export const BottomSheetContainer = ({
 
           <BottomSheet
             ref={sheetRef}
-            animationConfigs={{ duration: 400,}}
+            animationConfigs={{ duration: 200,}}
             handleIndicatorStyle={{ display: "none" }}
             index={-1}
             android_keyboardInputMode="adjustResize"
@@ -137,13 +137,13 @@ export const BottomSheetContainer = ({
                   paddingTop: 15,
                 }}
               >
-                <AnimatedViewBottomSheet isVisible={isOpen}>
+                {/* <AnimatedViewBottomSheet isVisible={isOpen}> */}
                   {ModalState.id ? (
                     <EditComponent />
                   ) : !ModalState.id && ModalState.isOpen ? (
                     <AddComponent />
                   ) : null}
-                </AnimatedViewBottomSheet>
+                {/* </AnimatedViewBottomSheet> */}
               </View>
             </BottomSheetView>
           </BottomSheet>

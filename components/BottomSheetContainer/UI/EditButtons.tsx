@@ -4,13 +4,15 @@ import { ArrowRight, TrashIcon } from "../../icons";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
 import { deleteExpense, updateExpense } from "../../../redux/slice/expenseSlice";
 import { closeModal } from "../../../redux/slice/modalSlice";
+import { deleteExpenseOnline } from "../../../util/http";
 
 export default function EditButtons({updateExpenseHandler}: {updateExpenseHandler: ()=> void}) {
   const dispatch = useAppDispatch();
   const modalState = useAppSelector((state) => state.modal);
 
-  const deleteExpenseHandler = () => {
+  const deleteExpenseHandler = async () => {
     console.log(modalState.id, "deleted");
+    await deleteExpenseOnline(modalState.id || "")
     dispatch(deleteExpense({ id: modalState.id || "" }));
     dispatch(closeModal());
   };

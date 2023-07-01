@@ -26,6 +26,8 @@ import EditButtons from "./UI/EditButtons";
 import { updateExpense } from "../../redux/slice/expenseSlice";
 import { closeModal } from "../../redux/slice/modalSlice";
 import { AnimatedView } from "./UI/Animate";
+import { updateExpenseOnline } from "../../util/http";
+import LoadingOverlay from "../UI/LoadingOverlay";
 
 export default function EditComponent() {
   const width = Dimensions.get("screen").width;
@@ -33,7 +35,7 @@ export default function EditComponent() {
   const expense = useAppSelector((state) => state.expense.expenses);
   const dispatch = useAppDispatch();
   console.log(modalState.id);
-
+  const [isFetching, setIsFetching] = useState(false);
   const pageExpense = expense?.filter((exp) => {
     return exp.id === modalState.id;
   });
@@ -83,7 +85,8 @@ export default function EditComponent() {
   const handleClose = () => {
     setCategory({ value: null, isValid: false });
   };
-  const updateExpenseHandler = () => {
+  const updateExpenseHandler = async () => {
+    setIsFetching(true);
     const amountIsValid =
       !isNaN(Number(content.amount.value)) && Number(content.amount.value) > 0;
     const expNameIsValid = content.expName.value.trim().length > 0;
@@ -114,12 +117,23 @@ export default function EditComponent() {
         },
       })
     );
+    await updateExpenseOnline(modalState.id || "", {
+      name: content.expName.value,
+      amount: Number(content.amount.value),
+      category: category.value,
+      date,
+    }).catch((e) => {
+      console.log(`error  is ${e}`);
+    });
     dispatch(closeModal());
     console.log("✅", content, category, date);
   };
 
   const inValidForm =
     !content.amount.isValid || !content.expName.isValid || !category.isValid;
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
   return (
     <View style={styles.screen}>
       <HeaderTextClose header="Edit Expense" />

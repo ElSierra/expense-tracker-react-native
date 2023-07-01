@@ -4,7 +4,7 @@ import Animated, {
   useAnimatedStyle,
   interpolateColor,
 } from "react-native-reanimated";
-import { useColorScheme } from "react-native";
+import { View, useColorScheme } from "react-native";
 
 export const CustomBackground: React.FC<BottomSheetBackgroundProps> = ({
   style,
@@ -22,21 +22,40 @@ export const CustomBackground: React.FC<BottomSheetBackgroundProps> = ({
       ["#D7EBA800", isDarkTheme ? "#00000000" : "#D7EBA8"]
     ),
   }));
+  const containerAnimatedStyleBottom = useAnimatedStyle(() => ({
+    // @ts-ignore
+    backgroundColor: interpolateColor(
+      animatedIndex.value,
+      [0, 1],
+      ["#ffffff", isDarkTheme ? "#00000000" : "#ffffff"]
+    ),
+  }));
   const containerStyle = useMemo(
     () => [style, containerAnimatedStyle],
     [style, containerAnimatedStyle]
   );
-  //#endregion
+  const containerStyleBottom = useMemo(
+    () => [style, containerAnimatedStyleBottom],
+    [style, containerAnimatedStyleBottom]
+  );
 
   // render
   return (
-    <Animated.View
-      pointerEvents="none"
-      style={[
-        containerStyle,
-        { borderRadius: 20, marginLeft: 20, marginTop: 10, marginRight: 20 },
-      ]}
-    ></Animated.View>
+    <>
+      <Animated.View
+        pointerEvents="none"
+        style={[
+          containerStyle,
+          { borderRadius: 20, marginLeft: 20, marginTop: 10, marginRight: 20, },
+        ]}
+      ></Animated.View>
+      <Animated.View style={[
+          containerStyleBottom,
+          { borderRadius: 20, marginLeft: 0, marginTop: 100, marginRight: 0, },
+        ]}>
+
+      </Animated.View>
+    </>
   );
 };
 

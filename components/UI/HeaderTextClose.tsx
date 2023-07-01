@@ -13,6 +13,7 @@ import { closeModal, openModalAdd } from "../../redux/slice/modalSlice";
 import { useEffect, useState } from "react";
 import { doNothing } from "../../redux/slice/expenseSlice";
 import Toast from "react-native-toast-message";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 
 export default function HeaderTextClose({ header }: { header: string }) {
   const dispatch = useAppDispatch();

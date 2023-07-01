@@ -1,4 +1,9 @@
-import React, { useState, useEffect, ReactNode, PropsWithChildren } from "react";
+import React, {
+  useState,
+  useEffect,
+  ReactNode,
+  PropsWithChildren,
+} from "react";
 import {
   View,
   Text,
@@ -17,35 +22,44 @@ export const AnimatedViewBottomSheet = ({
   children,
 }: {
   isVisible: boolean;
- 
+
   children: ReactNode;
 }) => {
   const [animation] = useState(new Animated.Value(0));
-
-
+  const [shouldRender, setShouldRender] = useState(isVisible);
+  const modalOpen = useAppSelector((state) => state.modal.isOpen);
 
   useEffect(() => {
-
+    console.log("shouldRender", shouldRender);
     if (isVisible) {
       Animated.timing(animation, {
         toValue: 1,
-        duration: 400,
+        duration: 200,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(animation, {
         toValue: 0,
-        duration: 400,
+        duration: 150,
         useNativeDriver: true,
-      }).start();
+      }).start(() => {
+        console.log("dddd");
+        return setShouldRender(false);
+      });
     }
-    
-   
-  }, [isVisible]);
+    if (modalOpen) {
+      setShouldRender(true);
+    }
+  }, [isVisible, modalOpen]);
 
   const animatedStyle = {
     opacity: animation,
   };
-
-  return <Animated.View style={[{width: "100%", height: "100%"},animatedStyle]}>{children}</Animated.View>;
+  if (shouldRender)
+    return (
+      <Animated.View style={[{ width: "100%", height: "100%" }, animatedStyle]}>
+        {children}
+      </Animated.View>
+    );
+  return <></>;
 };

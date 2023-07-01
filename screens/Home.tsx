@@ -4,7 +4,7 @@ import AnalyticsCard from "../components/Card/AnalyticsCard";
 
 import ExpenseComponent from "../components/Expenses/ExpenseComponent";
 
-import { useAppSelector } from "../redux/hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../redux/hooks/hooks";
 import {
   filterExpenseForCurrentWeek,
   getAmountsPerDay,
@@ -12,9 +12,18 @@ import {
 } from "../util/date";
 import { FadeInView } from "../components/FadeInView";
 import Toast from "react-native-toast-message";
+import { useBottomSheetModal } from "@gorhom/bottom-sheet";
+import { useEffect, useState } from "react";
+import { fetchExpenses } from "../util/http";
+import { setExpense } from "../redux/slice/expenseSlice";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 export default function Home() {
   const expenseList = useAppSelector((state) => state.expense.expenses);
+  const [isFetching, setIsFetching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
   const recentExpenses = expenseList.filter((expense) => {
     const today = new Date();
     const date7DaysAgo = getLessThanDate(today, 7);
@@ -41,10 +50,33 @@ export default function Home() {
     console.log("🚀 ~ file: Home.tsx:32 ~ Home ~ amountperDay:", amountperDay);
   }
 
+  useEffect(() => {
+    async function getExpenses() {
+      setIsFetching(true);
+      try {
+        const expenses = await fetchExpenses();
+        setIsFetching(false);
+        dispatch(setExpense(expenses));
+        setError(null);
+      } catch (error) {
+        console.log("error", error);
+        setError("Could not Fetch expenses");
+      }
+    }
+    getExpenses();
+  }, []);
+
+  if (error) {
+    return <ErrorOverlay error={error} />;
+  }
+
+  if (isFetching) {
+    return <LoadingOverlay />;
+  }
+
   return (
     <FadeInView style={styles.root}>
       <View>
-        
         <AnalyticsCard
           amountPerDay={amountperDay || [0]}
           totalSpent={formattedExpenseSum.split(".")[0]}
@@ -56,7 +88,6 @@ export default function Home() {
           periodName="Last 7 days"
         />
       </View>
-    
     </FadeInView>
   );
 }
