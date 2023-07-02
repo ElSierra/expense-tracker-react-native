@@ -11,11 +11,11 @@ import {
   getLessThanDate,
 } from "../util/date";
 import { FadeInView } from "../components/FadeInView";
-import Toast from "react-native-toast-message";
-import { useBottomSheetModal } from "@gorhom/bottom-sheet";
 import { useEffect, useState } from "react";
-import { fetchExpenses } from "../util/http";
+
 import { setExpense } from "../redux/slice/expenseSlice";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
 
@@ -51,29 +51,54 @@ export default function Home() {
   }
 
   useEffect(() => {
+    setIsFetching(true);
     async function getExpenses() {
-      setIsFetching(true);
-      try {
-        const expenses = await fetchExpenses();
-        setIsFetching(false);
-        dispatch(setExpense(expenses));
-        setError(null);
-      } catch (error) {
-        console.log("error", error);
-        setError("Could not Fetch expenses");
-      }
+      let expenseList: {
+        id: string;
+        name: string;
+        category: any;
+        date: any;
+        amount: number;
+      }[] = [];
+
+      const expenses = await firestore()
+        .collection("expenses")
+        .doc(auth().currentUser?.uid)
+        .collection("data")
+        .get()
+        .then((querySnapshot) => {
+          setIsFetching(false);
+          querySnapshot.forEach((documentSnapshot) => {
+            const snap = {
+              id: documentSnapshot.id,
+              name: documentSnapshot.data().name,
+              category: documentSnapshot.data().category,
+              date: documentSnapshot.data().date.toDate(),
+              amount: documentSnapshot.data().amount,
+            };
+            expenseList.push(snap);
+          });
+        })
+        .catch((error) => {
+          setIsFetching(false);
+          setError(error);
+        });
+
+      console.log(
+        "🚀 ~ file: ExpenseList.tsx:31 ~ getExpenses ~ expenseList:",
+        expenseList
+      );
+
+      dispatch(setExpense(expenseList));
     }
     getExpenses();
   }, []);
-
-  if (error) {
-    return <ErrorOverlay error={error} />;
-  }
-
   if (isFetching) {
     return <LoadingOverlay />;
   }
-
+  if (error) {
+    return <ErrorOverlay error={error} />;
+  }
   return (
     <FadeInView style={styles.root}>
       <View>

@@ -1,6 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-
+apply plugin: 'com.google.gms.google-services'
 import com.android.build.OutputFile
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
@@ -113,9 +113,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.hojoisaac.expensetracker'
+    namespace 'me.hojoisaac.expense'
     defaultConfig {
-        applicationId 'com.hojoisaac.expensetracker'
+        applicationId 'me.hojoisaac.expense'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

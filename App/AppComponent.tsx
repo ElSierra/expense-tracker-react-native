@@ -110,7 +110,6 @@ function BottomTabNavigator() {
 
 export default function App() {
   const dispatch = useAppDispatch();
-  const modalState = useAppSelector((state) => state.modal);
 
   const { width, height } = Dimensions.get("window");
   const theme = useColorScheme();

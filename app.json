@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*", "assets/images"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hojoisaac.expensetracker"
+      "bundleIdentifier": "me.hojoisaac.expense"
     },
     "androidStatusBar": {
       "translucent": false
@@ -29,7 +29,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hojoisaac.expensetracker"
+      "package": "me.hojoisaac.expense"
     },
     "web": {
       "favicon": "./assets/favicon.png"

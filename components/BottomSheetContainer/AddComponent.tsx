@@ -29,6 +29,8 @@ import { AnimatedView } from "./UI/Animate";
 import { storeExpense } from "../../util/http";
 import Modal from "react-native-modal";
 import LoadingOverlay from "../UI/LoadingOverlay";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 export default function AddComponent() {
   const width = Dimensions.get("screen").width;
@@ -114,27 +116,30 @@ export default function AddComponent() {
 
     setIsFetching(true);
     if (category.value !== null) {
-      const id = await storeExpense({
-        name: content.expName.value,
-        amount: Number(content.amount.value),
-        category: category.value,
-        date: date,
-      });
-      console.log(
-        "🚀 ~ file: AddComponent.tsx:121 ~ updateExpenseHandler ~ id:",
-        id
-      );
+      firestore()
+        .collection("expenses")
+        .doc(auth().currentUser?.uid)
+        .collection("data")
+        .add({
+          name: content.expName.value,
+          amount: Number(content.amount.value),
+          category: category.value,
+          date: date,
+        })
 
-      if (id)
-        dispatch(
-          addExpense({
-            id: "aasaaasasas",
-            name: content.expName.value,
-            amount: Number(content.amount.value),
-            category: category.value,
-            date: date,
-          })
-        );
+        .then((e) => {
+          console.log("🚀 ~ file: AddComponent.tsx:129 ~ .then ~ e:", e.id);
+          dispatch(
+            addExpense({
+              id: e.id,
+              name: content.expName.value,
+              amount: Number(content.amount.value),
+              category: category.value,
+              date: date,
+            })
+          );
+        });
+
       dispatch(closeModal());
     }
   };

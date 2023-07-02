@@ -12,7 +12,8 @@ import { FlatList, LayoutAnimation, RefreshControl, View } from "react-native";
 import { fetchExpenses } from "../../util/http";
 import { useAppDispatch } from "../../redux/hooks/hooks";
 import { setExpense } from "../../redux/slice/expenseSlice";
-
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 export default function ExpenseList({
   expenses,
   ListHeaderComponent,
@@ -26,8 +27,38 @@ export default function ExpenseList({
 
   const onRefresh = React.useCallback(() => {
     async function getExpenses() {
-      const expenses = await fetchExpenses();
-      dispatch(setExpense(expenses));
+      let expenseList: {
+        id: string;
+        name: string;
+        category: any;
+        date: any;
+        amount: number;
+      }[] = [];
+
+      const expenses = await firestore()
+        .collection("expenses")
+        .doc(auth().currentUser?.uid)
+        .collection("data")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((documentSnapshot) => {
+            const snap = {
+              id: documentSnapshot.id,
+              name: documentSnapshot.data().name,
+              category: documentSnapshot.data().category,
+              date: documentSnapshot.data().date.toDate(),
+              amount: documentSnapshot.data().amount,
+            };
+            expenseList.push(snap);
+          });
+        });
+
+      console.log(
+        "🚀 ~ file: ExpenseList.tsx:31 ~ getExpenses ~ expenseList:",
+        expenseList
+      );
+
+      dispatch(setExpense(expenseList));
     }
     getExpenses();
   }, []);

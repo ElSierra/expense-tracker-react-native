@@ -1,4 +1,4 @@
-package com.hojoisaac.expensetracker;
+package me.hojoisaac.expense;
 
 import android.app.Application;
 import android.content.res.Configuration;

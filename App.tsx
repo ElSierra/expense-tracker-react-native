@@ -6,11 +6,14 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Text, Appearance, useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import AuthComponent from "./App/AuthComponent";
+import auth from "@react-native-firebase/auth";
+import { FadeInView } from "./components/FadeInView";
 
 SplashScreen.preventAutoHideAsync();
 export default function Main() {
@@ -23,23 +26,41 @@ export default function Main() {
     RobotoBold: require("./assets/fonts/Roboto-Bold.ttf"),
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (fontsLoaded) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [fontsLoaded]);
+
+  // if (!fontsLoaded) {
+  //   return null;
+  // }
+
+  const Navigation = () => {
+    const [user, setUser] = useState();
+
+    async function onAuthStateChanged(user: any) {
+      setUser(user);
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
-    return null;
-  }
+    useEffect(() => {
+      const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+      return subscriber; // unsubscribe on unmount
+    }, []);
 
+    return (
+      <NavigationContainer>
+        {/* <App /> */}
+        {!user ? <FadeInView style={{flex: 1}}><AuthComponent /></FadeInView> : <App />}
+      </NavigationContainer>
+    );
+  };
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
-      <PaperProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </PaperProvider>
-    </NavigationContainer>
+    <PaperProvider>
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    </PaperProvider>
   );
 }
