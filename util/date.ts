@@ -24,6 +24,11 @@ export function getFormatDate(date: Date): string {
   return format(date, "EEE", { locale: enUS });
 }
 
+export function getFormatDateAll(date: Date): string {
+ 
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 export function getLessThanDate(date: Date, days: number) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
 }
@@ -59,11 +64,9 @@ function getDatesForCurrentWeek(): Date[] {
   return dates;
 }
 
+
 export function filterExpenseForCurrentWeek(expense: Expenses[]): Expenses[] {
-  console.log(
-    "🚀 ~ file: date.ts:57 ~ filterExpenseForCurrentWeek ~ datesForCurrentWeek:",
-    getDatesForCurrentWeek
-  );
+
 
   return expense.filter((expense) => {
     return getDatesForCurrentWeek().some((date) => {
@@ -77,6 +80,7 @@ export function filterExpenseForCurrentWeek(expense: Expenses[]): Expenses[] {
 }
 
 export function getAmountsPerDay(expense: Expenses[]) {
+ 
   const newList = expense.reduce((acc: Expenses[], expense) => {
     const date = new Date(
       expense.date.getFullYear(),
@@ -97,7 +101,7 @@ export function getAmountsPerDay(expense: Expenses[]) {
       acc.push({
         date,
         amount: expense.amount,
-        id: "",
+        id: (date.getDay()+1).toString(),
         category: null,
         name: "",
       });
@@ -105,6 +109,41 @@ export function getAmountsPerDay(expense: Expenses[]) {
     return acc;
   }, []);
 
-  const amounts = newList.map((item) => item.amount);
-  return amounts;
+  const amountswithId = newList.map((item) => {return {id: item.id, amounts: item.amount}});
+  return amountswithId;
+}
+
+
+export const makeAmountList = (expenseList: Expenses[]) => {
+  let amountList:any = [];
+
+  for (let i = 1; (i <= 7); i++) {
+ 
+      const day = getAmountsPerDay(expenseList).find(
+        (item) => Number(item.id) === i
+      );
+     if (day){
+      amountList.push(day?.amounts);}
+      else{
+        amountList.push(0)
+      }
+  }
+
+  return amountList;
+};
+
+
+export function getMonthsUpToCurrent(): string[] {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+
+  const months: string[] = [];
+  for (let month = 1; month <= currentMonth; month++) {
+    const date = new Date(currentYear, month - 1, 1);
+    const monthName = date.toLocaleString('en-US', { month: 'short' });
+    months.push(monthName);
+  }
+
+  return months;
 }

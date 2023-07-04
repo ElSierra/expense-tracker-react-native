@@ -26,33 +26,41 @@ export default function Main() {
     RobotoBold: require("./assets/fonts/Roboto-Bold.ttf"),
   });
 
-  // const onLayoutRootView = useCallback(async () => {
-  //   if (fontsLoaded) {
-  //     await SplashScreen.hideAsync();
-  //   }
-  // }, [fontsLoaded]);
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const Navigation = () => {
+    const theme = useColorScheme();
+    const isDarkTheme = theme === "dark";
     const [user, setUser] = useState();
 
     async function onAuthStateChanged(user: any) {
       setUser(user);
+      //console.log("🚀 ~ file: App.tsx:44 ~ onAuthStateChanged ~ user:", user)
       await SplashScreen.hideAsync();
     }
 
     useEffect(() => {
       const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-      return subscriber; // unsubscribe on unmount
+      return subscriber;
     }, []);
 
     return (
-      <NavigationContainer>
-        {/* <App /> */}
-        {!user ? <FadeInView style={{flex: 1}}><AuthComponent /></FadeInView> : <App />}
+      <NavigationContainer onReady={onLayoutRootView}>
+        {!user ? (
+          <FadeInView style={{ flex: 1, backgroundColor: isDarkTheme ? "#000000" :"#FFFFFF" }}>
+            <AuthComponent />
+          </FadeInView>
+        ) : (
+          <App />
+        )}
       </NavigationContainer>
     );
   };

@@ -2,8 +2,9 @@ import { View, Dimensions, Text, useColorScheme } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { FadeInView } from "../FadeInView";
+import { getMonthsUpToCurrent } from "../../util/date";
 
-export default function ChartFull() {
+export default function ChartFull({expenseAmount}: {expenseAmount : number[]}) {
   const theme = useColorScheme();
 
   const isDarkTheme = theme === "dark";
@@ -11,25 +12,10 @@ export default function ChartFull() {
     <View style={{ flex: 1 }}>
       <LineChart
         data={{
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
+          labels: getMonthsUpToCurrent(),
           datasets: [
             {
-              data: [
-                500, 200, 800, 400, 600, 600, 900, 500, 200, 800, 400, 600,
-              ],
+              data: expenseAmount.length > 0 ? expenseAmount : [0],
             },
           ],
         }}

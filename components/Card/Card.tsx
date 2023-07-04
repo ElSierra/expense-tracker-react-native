@@ -16,7 +16,7 @@ export default function Card({
         resizeMode="cover"
         imageStyle={{ opacity: 1 }}
         style={style.frontBox}
-        source={require("../../assets/images/box-cut.png")}
+        source={require("../../assets/images/box-cut.webp")}
       >
         <Text style={style.header}>Total Spent (This week)</Text>
 

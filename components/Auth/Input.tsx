@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInputProps,
   StyleProp,
+  useColorScheme,
 } from "react-native";
 import React from "react";
 import { TextStyle } from "react-native";
@@ -18,10 +19,17 @@ export default function InputComponent({
   options?: TextInputProps;
   styles?: StyleProp<TextStyle>;
 }) {
+  const theme = useColorScheme();
+  const isDarkTheme = theme === "dark";
   return (
     <TextInput
       secureTextEntry={placeholder === "Password"}
-      style={[style.input, styles]}
+      style={[
+        style.input,
+        styles,
+        { backgroundColor: isDarkTheme ? "#161b22" : "white" },
+      ]}
+      placeholderTextColor={isDarkTheme ? "#E2E2E2" : "grey"}
       placeholder={placeholder}
       {...options}
     />

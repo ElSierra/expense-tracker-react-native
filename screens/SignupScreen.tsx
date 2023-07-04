@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet, KeyboardAvoidingView, useColorScheme } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../components/Auth/Input";
@@ -13,7 +13,12 @@ import {
 } from "../firebase/auth/withEmail";
 import Toast from "react-native-toast-message";
 import { SignUpProp } from "../types/navigation";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
 export default function SignupScreen({ navigation }: SignUpProp) {
+  const theme = useColorScheme();
+  const isDarkTheme = theme === "dark";
+
   const [input, setInput] = useState({
     email: {
       value: "",
@@ -25,12 +30,12 @@ export default function SignupScreen({ navigation }: SignUpProp) {
     },
   });
   const [loading, setIsloading] = useState(false);
-
+const [googleLoading, setIsGoogleLoading] = useState(false);
   const validateEmail = (text: string) => {
-    console.log(text);
+    //console.log(text);
 
     if (!validator.isEmail(text)) {
-      console.log("Email is Not Correct");
+      //console.log("Email is Not Correct");
       setInput((prev) => {
         return { ...prev, email: { value: text, isValid: false } };
       });
@@ -40,13 +45,17 @@ export default function SignupScreen({ navigation }: SignUpProp) {
         return { ...prev, email: { value: text, isValid: true } };
       });
 
-      console.log("Email is Correct");
+      //console.log("Email is Correct");
     }
   };
 
   const handlePassword = (text: string) => {
-    console.log(text);
-
+    //console.log(text);
+if (!validator.isStrongPassword(text)){
+  setInput((prev) => {
+    return { ...prev, password: { value: text, isValid: false } };
+  });
+}
     setInput((prev) => {
       return { ...prev, password: { value: text, isValid: true } };
     });
@@ -56,17 +65,10 @@ export default function SignupScreen({ navigation }: SignUpProp) {
     setIsloading(true);
     createAccountWithEmail(input.email.value, input.password.value)
       .then((response) => {
-        console.log(
-          "🚀 ~ file: LoginScreen.tsx:58 ~ .then ~ response:",
-          response
-        );
+     
       })
       .catch((e: any) => {
-       
-        console.log(
-          "🚀 ~ file: LoginScreen.tsx:62 ~ submitHandler ~ e:",
-          e.code
-        );
+        
         if (e.code === "auth/email-already-in-use") {
           Toast.show({
             type: "loginToast",
@@ -81,6 +83,19 @@ export default function SignupScreen({ navigation }: SignUpProp) {
         setIsloading(false);
       });
   };
+
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
   return (
     <View style={{ flex: 1 }}>
       <KeyboardAwareScrollView
@@ -132,6 +147,7 @@ export default function SignupScreen({ navigation }: SignUpProp) {
                 !input.email.isValid
               }
               onPress={submitHandler}
+
               labelStyle={{ fontFamily: "JakaraSemiBold" }}
               style={{ height: 50, borderRadius: 10 }}
               contentStyle={{ height: 50 }}
@@ -156,28 +172,29 @@ export default function SignupScreen({ navigation }: SignUpProp) {
               alignItems: "center",
               marginVertical: 20,
             }}
-          >
-            <Text style={{ fontFamily: "JakaraSemiBold", fontSize: 15 }}>
-              Or
-            </Text>
-          </View>
+          ></View>
           <Button
             mode="contained"
+            loading={googleLoading}
             labelStyle={{
               fontFamily: "JakaraSemiBold",
               includeFontPadding: false,
+              color: isDarkTheme ? "white" : "black"
             }}
             textColor="black"
-            onPress={() => {
-              console.log("pressed");
-            }}
+            onPress={() =>{
+              setTimeout(()=>{ setIsGoogleLoading(true)}, 100)
+              onGoogleButtonPress().then(() =>
+              setIsGoogleLoading(false)
+              ).catch(()=>{setIsGoogleLoading(false)})}
+            }
             icon={({ size, color }) => (
               <GoogleICon size={size + 5} color={color} />
             )}
             style={{
               height: 50,
               borderRadius: 10,
-              backgroundColor: "#FDF5FF",
+              backgroundColor: isDarkTheme? "#33193A" :"#FDF5FF",
               borderWidth: 0.5,
 
               borderColor: "#F7D9FF",

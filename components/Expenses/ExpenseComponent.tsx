@@ -43,6 +43,7 @@ export default function ExpenseComponent({
       </View>
       {expenses.length > 0 ? (
         <ExpenseList
+        periodName={periodName}
           expenses={expenses}
           ListHeaderComponent={ListHeaderComponent}
         />

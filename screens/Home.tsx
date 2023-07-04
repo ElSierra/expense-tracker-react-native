@@ -9,6 +9,7 @@ import {
   filterExpenseForCurrentWeek,
   getAmountsPerDay,
   getLessThanDate,
+  makeAmountList,
 } from "../util/date";
 import { FadeInView } from "../components/FadeInView";
 import { useEffect, useState } from "react";
@@ -24,15 +25,11 @@ export default function Home() {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  const recentExpenses = expenseList.filter((expense) => {
-    const today = new Date();
-    const date7DaysAgo = getLessThanDate(today, 7);
-    return expense.date > date7DaysAgo;
-  });
+
   const thisweekexpense = filterExpenseForCurrentWeek(expenseList);
-  console.log(
-    "🚀 ~ file: Home.tsx:19 ~ Home ~ thisweekexpense:",
-    thisweekexpense
+  
+  const sortedExpense = thisweekexpense.sort(
+    (a, b) => Number(b.date) - Number(a.date)
   );
   const expenseSum = thisweekexpense?.reduce(
     (acc, curr) => acc + curr.amount,
@@ -46,8 +43,8 @@ export default function Home() {
   }).format(expenseSum);
   let amountperDay;
   if (thisweekexpense.length > 0) {
-    amountperDay = getAmountsPerDay(thisweekexpense);
-    console.log("🚀 ~ file: Home.tsx:32 ~ Home ~ amountperDay:", amountperDay);
+    amountperDay = makeAmountList(thisweekexpense);
+    //console.log("🚀 ~ file: Home.tsx:32 ~ Home ~ amountperDay:", amountperDay);
   }
 
   useEffect(() => {
@@ -64,7 +61,7 @@ export default function Home() {
       const expenses = await firestore()
         .collection("expenses")
         .doc(auth().currentUser?.uid)
-        .collection("data")
+        .collection(new Date().getFullYear().toString())
         .get()
         .then((querySnapshot) => {
           setIsFetching(false);
@@ -84,10 +81,7 @@ export default function Home() {
           setError(error);
         });
 
-      console.log(
-        "🚀 ~ file: ExpenseList.tsx:31 ~ getExpenses ~ expenseList:",
-        expenseList
-      );
+     
 
       dispatch(setExpense(expenseList));
     }
@@ -108,10 +102,7 @@ export default function Home() {
         />
       </View>
       <View style={styles.root}>
-        <ExpenseComponent
-          expenses={recentExpenses.reverse()}
-          periodName="Last 7 days"
-        />
+        <ExpenseComponent expenses={sortedExpense} periodName="📅 This week" />
       </View>
     </FadeInView>
   );

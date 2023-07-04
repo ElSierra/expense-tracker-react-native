@@ -51,13 +51,9 @@ const expenseSlice = createSlice({
       );
 
       const updatableExpense = state.expenses[expenseIndex];
-      console.log(
-        "🚀 ~ file: expenseSlice.tsx:44 ~ updatableExpense:",
-        updatableExpense
-      );
+      
       const updatedItem = { ...updatableExpense, ...action.payload.expense };
-      console.log("🚀 ~ file: expenseSlice.tsx:46 ~ updatedItem:", updatedItem);
-
+     
       state.expenses[expenseIndex] = updatedItem;
     },
     doNothing: (state) => {

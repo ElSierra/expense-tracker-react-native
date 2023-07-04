@@ -6,6 +6,8 @@ import {
   TextInput,
   useColorScheme,
   Button,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 import HeaderTextClose from "../UI/HeaderTextClose";
@@ -34,7 +36,7 @@ export default function EditComponent() {
   const modalState = useAppSelector((state) => state.modal);
   const expense = useAppSelector((state) => state.expense.expenses);
   const dispatch = useAppDispatch();
-  console.log(modalState.id);
+  ////console.log(modalState.id);
   const [isFetching, setIsFetching] = useState(false);
   const pageExpense = expense?.filter((exp) => {
     return exp.id === modalState.id;
@@ -72,12 +74,8 @@ export default function EditComponent() {
   };
 
   const handlePressed = (inputIdentifier: Category) => {
-    console.log(
-      "🚀 ~ file: EditComponent.tsx:63 ~ handlePressed ~ inputIdentifier:",
-      inputIdentifier
-    );
     if (category.value === inputIdentifier) {
-      console.log("I am the same");
+      //console.log("I am the same");
       return setCategory({ value: null, isValid: false });
     }
     setCategory({ value: inputIdentifier, isValid: true });
@@ -86,7 +84,6 @@ export default function EditComponent() {
     setCategory({ value: null, isValid: false });
   };
   const updateExpenseHandler = async () => {
-    setIsFetching(true);
     const amountIsValid =
       !isNaN(Number(content.amount.value)) && Number(content.amount.value) > 0;
     const expNameIsValid = content.expName.value.trim().length > 0;
@@ -106,27 +103,33 @@ export default function EditComponent() {
     if (!amountIsValid || !expNameIsValid || !categoryIsValid) {
       return;
     }
-    dispatch(
-      updateExpense({
-        id: modalState.id || "",
-        expense: {
-          name: content.expName.value,
-          amount: Number(content.amount.value),
-          category: category.value,
-          date,
-        },
-      })
-    );
-    await updateExpenseOnline(modalState.id || "", {
-      name: content.expName.value,
-      amount: Number(content.amount.value),
-      category: category.value,
-      date,
-    }).catch((e) => {
-      console.log(`error  is ${e}`);
-    });
-    dispatch(closeModal());
-    console.log("✅", content, category, date);
+    if (Keyboard.isVisible()) {
+      return Keyboard.dismiss();
+    }
+    if (!Keyboard.isVisible()) {
+      setIsFetching(true);
+      dispatch(
+        updateExpense({
+          id: modalState.id || "",
+          expense: {
+            name: content.expName.value,
+            amount: Number(content.amount.value),
+            category: category.value,
+            date,
+          },
+        })
+      );
+      await updateExpenseOnline(modalState.id || "", {
+        name: content.expName.value,
+        amount: Number(content.amount.value),
+        category: category.value,
+        date,
+      }).catch((e) => {
+        //console.log(`error  is ${e}`);
+      });
+      dispatch(closeModal());
+    }
+    //console.log("✅", content, category, date);
   };
 
   const inValidForm =
@@ -135,67 +138,69 @@ export default function EditComponent() {
     return <LoadingOverlay />;
   }
   return (
-    <View style={styles.screen}>
-      <HeaderTextClose header="Edit Expense" />
-      <View style={{ width: "100%", height: "100%", gap: 10 }}>
-        <AnimatedView isVisible={inValidForm}>
-          <Text style={{ textAlign: "center", color: "red" }}>
-            Error in inputs
-          </Text>
-        </AnimatedView>
-        <InputText
-          value={content.expName.value || ""}
-          invalid={!content.expName.isValid}
-          onChange={handleChange.bind(null, "expName")}
-          label="Expense Name"
-        />
-        <InputText
-          icon={"₦"}
-          textInputConfig={{ keyboardType: "number-pad" }}
-          invalid={!content.amount.isValid}
-          value={content.amount.value || ""}
-          onChange={handleChange.bind(null, "amount")}
-          label="Amount"
-        />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.screen}>
+        <HeaderTextClose header="Edit Expense" />
+        <View style={{ width: "100%", height: "100%", gap: 10 }}>
+          <AnimatedView isVisible={inValidForm}>
+            <Text style={{ textAlign: "center", color: "red" }}>
+              Error in inputs
+            </Text>
+          </AnimatedView>
+          <InputText
+            value={content.expName.value || ""}
+            invalid={!content.expName.isValid}
+            onChange={handleChange.bind(null, "expName")}
+            label="Expense Name"
+          />
+          <InputText
+            icon={"₦"}
+            textInputConfig={{ keyboardType: "number-pad" }}
+            invalid={!content.amount.isValid}
+            value={content.amount.value || ""}
+            onChange={handleChange.bind(null, "amount")}
+            label="Amount"
+          />
 
-        <View style={{ height: 60, width: width, paddingLeft: 2, gap: 5 }}>
-          <Text
-            style={{
-              fontFamily: "JakaraExtraBold",
-              color: category.isValid ? "#7E7C7C" : "red",
-            }}
-          >
-            Select a category
-          </Text>
-          <ScrollView
-            horizontal={true}
-            style={{ flex: 1 }}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 6 }}
-          >
-            {categoryList.map((cat) => (
-              <ChipContainer
-                handlePressed={handlePressed.bind(null, cat.type)}
-                handleClose={handleClose}
-                key={cat.type}
-                pressed={cat.type === category.value}
-                color={isDarkTheme ? "#FFFFFF" : cat.color}
-                text={cat.type}
-              />
-            ))}
-          </ScrollView>
+          <View style={{ height: 60, width: width, paddingLeft: 2, gap: 5 }}>
+            <Text
+              style={{
+                fontFamily: "JakaraExtraBold",
+                color: category.isValid ? "#7E7C7C" : "red",
+              }}
+            >
+              Select a category
+            </Text>
+            <ScrollView
+              horizontal={true}
+              style={{ flex: 1 }}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 6 }}
+            >
+              {categoryList.map((cat) => (
+                <ChipContainer
+                  handlePressed={handlePressed.bind(null, cat.type)}
+                  handleClose={handleClose}
+                  key={cat.type}
+                  pressed={cat.type === category.value}
+                  color={isDarkTheme ? "#FFFFFF" : cat.color}
+                  text={cat.type}
+                />
+              ))}
+            </ScrollView>
+          </View>
+          <View>
+            <Text style={{ fontFamily: "JakaraExtraBold", color: "#656565" }}>
+              Date
+            </Text>
+            <DatePickerAndroid date={date} onChange={onChange} />
+          </View>
         </View>
-        <View>
-          <Text style={{ fontFamily: "JakaraExtraBold", color: "#656565" }}>
-            Date
-          </Text>
-          <DatePickerAndroid date={date} onChange={onChange} />
-        </View>
+        <AnimatedButton isVisible={modalState.isOpen && modalState.id !== null}>
+          <EditButtons updateExpenseHandler={updateExpenseHandler} />
+        </AnimatedButton>
       </View>
-      <AnimatedButton isVisible={modalState.isOpen && modalState.id !== null}>
-        <EditButtons updateExpenseHandler={updateExpenseHandler} />
-      </AnimatedButton>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 const styles = StyleSheet.create({

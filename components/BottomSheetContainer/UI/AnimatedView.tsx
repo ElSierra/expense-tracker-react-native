@@ -30,7 +30,7 @@ export const AnimatedViewBottomSheet = ({
   const modalOpen = useAppSelector((state) => state.modal.isOpen);
 
   useEffect(() => {
-    console.log("shouldRender", shouldRender);
+    //console.log("shouldRender", shouldRender);
     if (isVisible) {
       Animated.timing(animation, {
         toValue: 1,
@@ -43,7 +43,7 @@ export const AnimatedViewBottomSheet = ({
         duration: 150,
         useNativeDriver: true,
       }).start(() => {
-        console.log("dddd");
+        //console.log("dddd");
         return setShouldRender(false);
       });
     }

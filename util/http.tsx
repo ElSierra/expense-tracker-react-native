@@ -13,7 +13,7 @@ export async function storeExpense(expenseData: {
     `${BACKEND_URL}/expenses.json`,
     expenseData
   );
-  console.log("🚀 ~ file: http.tsx:15 ~ response:", response.data);
+  //console.log("🚀 ~ file: http.tsx:15 ~ response:", response.data);
 
   const id = response.data.name;
   return id;
@@ -34,10 +34,7 @@ export async function fetchExpenses() {
     };
     expenses.push(expenseObj);
   }
-  console.log(
-    "🚀 ~ file: http.tsx:24 ~ getExpenses ~ response:",
-    response.data
-  );
+ 
   return expenses;
 }
 

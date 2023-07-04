@@ -1,14 +1,17 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
 import ExpenseComponent from "../components/Expenses/ExpenseComponent";
-import { EXPENSE_DATA } from "../data/data";
 import ChartFull from "../components/Expenses/ChartFull";
 import { useAppSelector } from "../redux/hooks/hooks";
-import { useBottomSheet } from '@gorhom/bottom-sheet';
+import { groupedExpensesTotal, makeAmountList } from "../util/groupbyMonth";
+
 export default function AllExpenses() {
   const expensesList = useAppSelector((state) => state.expense.expenses);
-  const newExpense = [...expensesList]
-  
+  const newExpense = [...expensesList];
+  const expenseAmountPerMonth = makeAmountList(newExpense);
+  const sortedExpense = newExpense.sort(
+    (a, b) => Number(b.date) - Number(a.date)
+  );
   return (
     <View style={styles.root}>
       <View style={styles.allExpensesContainer}>
@@ -16,12 +19,13 @@ export default function AllExpenses() {
       </View>
       <View style={styles.main}>
         <ExpenseComponent
-          expenses={newExpense.reverse()}
-          periodName="Total"
-          ListHeaderComponent={<ChartFull />}
+          expenses={sortedExpense}
+          periodName={`📅 ${new Date().getFullYear().toString()}`}
+          ListHeaderComponent={
+            <ChartFull expenseAmount={expenseAmountPerMonth} />
+          }
         />
       </View>
-
     </View>
   );
 }
@@ -47,5 +51,3 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
-
-

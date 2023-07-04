@@ -25,7 +25,7 @@ export default function LoginToast(props: any) {
         <ForbiddenIcon size={20} color="red" />
         <Text
           style={{
-            color: "black",
+            color: isDarkTheme?"white":"black",
             fontFamily: "JakaraSemiBold",
             includeFontPadding: false,
           }}

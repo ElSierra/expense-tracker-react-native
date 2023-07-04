@@ -23,8 +23,7 @@ export const AnimatedButton = ({
   const modalOpen = useAppSelector((state) => state.modal.isOpen);
 
   useEffect(() => {
-   
-    console.log("shouldRender", shouldRender);
+    //console.log("shouldRender", shouldRender);
     if (isVisible) {
       Animated.timing(animation, {
         toValue: 1,
@@ -37,13 +36,13 @@ export const AnimatedButton = ({
         duration: 200,
         useNativeDriver: true,
       }).start(() => {
-        console.log("dddd");
+        //console.log("dddd");
         return setShouldRender(false);
       });
     }
     if (modalOpen) {
-        setShouldRender(true);
-      }
+      setShouldRender(true);
+    }
   }, [isVisible, modalOpen]);
 
   const animatedStyle = {
@@ -59,11 +58,10 @@ export const AnimatedButton = ({
         zIndex: 999,
         display: shouldRender ? "flex" : "none",
         bottom: 20,
-     paddingHorizontal: 20,
+        paddingHorizontal: 20,
         width: "100%",
       }}
     >
-  
       <Animated.View style={[animatedStyle]}>{children}</Animated.View>
     </View>
   );

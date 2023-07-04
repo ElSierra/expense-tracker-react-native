@@ -2,21 +2,39 @@ import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { ArrowRight, TrashIcon } from "../../icons";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks/hooks";
-import { deleteExpense, updateExpense } from "../../../redux/slice/expenseSlice";
+import {
+  deleteExpense,
+  updateExpense,
+} from "../../../redux/slice/expenseSlice";
 import { closeModal } from "../../../redux/slice/modalSlice";
 import { deleteExpenseOnline } from "../../../util/http";
 
-export default function EditButtons({updateExpenseHandler}: {updateExpenseHandler: ()=> void}) {
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+
+export default function EditButtons({
+  updateExpenseHandler,
+}: {
+  updateExpenseHandler: () => void;
+}) {
   const dispatch = useAppDispatch();
   const modalState = useAppSelector((state) => state.modal);
 
   const deleteExpenseHandler = async () => {
-    console.log(modalState.id, "deleted");
-    await deleteExpenseOnline(modalState.id || "")
+    //console.log(modalState.id, "deleted");
+    firestore()
+      .collection("expenses")
+      .doc(auth().currentUser?.uid)
+      .collection("data")
+      .doc(modalState.id || "")
+      .delete()
+      .then(() => {
+        //console.log('deleted')
+      });
     dispatch(deleteExpense({ id: modalState.id || "" }));
     dispatch(closeModal());
   };
- 
+
   return (
     <View style={styles.buttonContainer}>
       <Button
@@ -45,7 +63,7 @@ export default function EditButtons({updateExpenseHandler}: {updateExpenseHandle
 const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
-    
+
     alignContent: "center",
 
     justifyContent: "center",

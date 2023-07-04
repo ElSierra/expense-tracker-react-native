@@ -1,12 +1,19 @@
 import { StyleSheet, View, Text, useColorScheme } from "react-native";
 import { Expenses } from "../../data/model";
-import { getFormatDate } from "../../util/date";
+import { getFormatDate, getFormatDateAll } from "../../util/date";
 import { TouchableRipple } from "react-native-paper";
 
 import { useAppDispatch } from "../../redux/hooks/hooks";
 import { openModalEdit } from "../../redux/slice/modalSlice";
 
-export default function ListContainer({ expense }: { expense: Expenses }) {
+export default function ListContainer({
+  expense,
+  periodName,
+}: {
+  expense: Expenses;
+  periodName: string;
+}) {
+  
   const dispatch = useAppDispatch();
   const theme = useColorScheme();
 
@@ -35,8 +42,8 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
   const trimExpName = () => {
     if (expense.name.length > 20) {
       return `${expense.name.slice(0, 20)} ...`;
-    }else {
-      return expense.name
+    } else {
+      return expense.name;
     }
   };
 
@@ -71,7 +78,11 @@ export default function ListContainer({ expense }: { expense: Expenses }) {
               >
                 {trimExpName()}
               </Text>
-              <Text style={styles.textFoot}>{getFormatDate(expense.date)}</Text>
+              <Text style={styles.textFoot}>
+                {periodName != new Date().getFullYear().toString()
+                  ? getFormatDate(expense.date)
+                  : getFormatDateAll(expense.date)}
+              </Text>
             </View>
           </View>
 

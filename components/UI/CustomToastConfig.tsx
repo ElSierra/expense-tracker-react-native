@@ -1,6 +1,8 @@
-import { BaseToast, ErrorToast } from "react-native-toast-message";
+import { BaseToast, ErrorToast,} from "react-native-toast-message";
 import CustomToast from "./CustomToast";
 import LoginToast from "./LoginToast";
+import ConfirmToast from "./ConfirmToast";
+import InfoToast from "./InfoToast";
 
 export const toastConfig = {
   /*
@@ -64,4 +66,6 @@ export const toastConfig = {
     // />
     <LoginToast {...props} />
   ),
+  successToast: (props: any) => <ConfirmToast {...props} />,
+  infoToast: (props: any) => <InfoToast {...props} />,
 };

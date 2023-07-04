@@ -11,7 +11,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "../screens/Home";
 import AddNewExpenseButton from "../components/UI/AddNewExpenseButton";
-import { BackIcon, CalendarIcon, HomeIcon } from "../components/icons";
+import {
+  BackIcon,
+  CalendarIcon,
+  HomeIcon,
+  LogoutIcon,
+  ProfileIcon,
+} from "../components/icons";
 import { BottomSheetContainer } from "../components/BottomSheet/BottomSheet";
 import { useCallback, useRef } from "react";
 import BottomSheet, { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
@@ -23,6 +29,8 @@ import { FadeInView } from "../components/FadeInView";
 import Profile from "../screens/Profile";
 import { useAppSelector } from "../redux/hooks/hooks";
 import { useColorScheme } from "react-native";
+import { Image } from "expo-image";
+import auth from "@react-native-firebase/auth";
 
 import {
   ExpenseProp,
@@ -40,10 +48,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createMaterialTopTabNavigator();
 function BottomTabNavigator() {
   const theme = useColorScheme();
-  console.log(
-    "🚀 ~ file: AppComponent.tsx:40 ~ BottomTabNavigator ~ theme:",
-    theme
-  );
+
   const isDarkTheme = theme === "dark";
   return (
     <Tab.Navigator
@@ -108,16 +113,20 @@ function BottomTabNavigator() {
   );
 }
 
+const signout = () => {
+  auth()
+    .signOut()
+    .then(() => console.log("User signed out!"));
+};
 export default function App() {
   const dispatch = useAppDispatch();
 
   const { width, height } = Dimensions.get("window");
   const theme = useColorScheme();
-  console.log(
-    "🚀 ~ file: AppComponent.tsx:40 ~ BottomTabNavigator ~ theme:",
-    theme
-  );
+
   const isDarkTheme = theme === "dark";
+
+  console.log(auth().currentUser?.photoURL)
   return (
     <>
       <StatusBar
@@ -136,7 +145,7 @@ export default function App() {
             resizeMode="cover"
             style={{ flex: 1 }} //! style={{flex:1}}, incase of ui issues
             imageStyle={{ opacity: 0.1 }}
-            source={require("../assets/images/bg.png")}
+            source={require("../assets/images/bg.webp")}
           >
             <Stack.Navigator
               screenOptions={{
@@ -156,7 +165,8 @@ export default function App() {
                     headerLeft: ({}) => (
                       <FadeInView
                         style={{
-                          width: 40,
+                          width: 48,
+                          marginLeft: 5,
                           borderRadius: 100,
                           overflow: "hidden",
                         }}
@@ -167,10 +177,14 @@ export default function App() {
                             navigation.navigate("Profile");
                           }}
                         >
-                          <Avatar.Image
-                            size={40}
-                            source={require("../assets/images/placeholder.png")}
-                          />
+                          {auth().currentUser?.photoURL !== null ? (
+                            <Image
+                              source={auth().currentUser?.photoURL}
+                              style={{ height: 48, width: 48 }}
+                            />
+                          ) : (
+                            <ProfileIcon size={48} color={isDarkTheme ? "white": "black"} />
+                          )}
                         </TouchableRipple>
                       </FadeInView>
                     ),
@@ -206,11 +220,15 @@ export default function App() {
                         size={40}
                         radius={10}
                         onPress={() => {
-                          console.log("pressed");
                           navigation.goBack();
                         }}
                       >
                         <BackIcon size={40} color={tintColor || "green"} />
+                      </IconButton>
+                    ),
+                    headerRight: () => (
+                      <IconButton size={40} radius={10} onPress={signout}>
+                        <LogoutIcon size={40} color={"#d00f4c"} />
                       </IconButton>
                     ),
                     headerTitleStyle: {

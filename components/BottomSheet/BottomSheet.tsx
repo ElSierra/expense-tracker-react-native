@@ -22,41 +22,41 @@ import EditComponent from "../BottomSheetContainer/EditComponent";
 import AddComponent from "../BottomSheetContainer/AddComponent";
 import Toast from "react-native-toast-message";
 import { AnimatedViewBottomSheet } from "../BottomSheetContainer/UI/AnimatedView";
+import { StatusBar } from "expo-status-bar";
 
 export const BottomSheetContainer = ({
   children,
 }: {
   children?: ReactNode;
 }) => {
+
+  const snapPointListForAdd = ["40%", "95%",]
+  const snapPointListForEdit = [ "40%", "90%", ]
   const ModalState = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
   const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["20%", "30%", "40%", "90%"], []);
+  const snapPointsForAdd = useMemo(() => snapPointListForAdd, []);
+  const snapPointsForEdit = useMemo(() => snapPointListForEdit, []);
 
   const theme = useColorScheme();
   const isDarkTheme = theme === "dark";
-  const [isOpen, setIsOpen] = useState(false)
+  
 
   if (ModalState.id && ModalState.isOpen) {
-    sheetRef.current?.snapToIndex(3);
+    sheetRef.current?.snapToIndex(1);
   } else if (!ModalState.id && ModalState.isOpen) {
-    sheetRef.current?.snapToIndex(3);
+    sheetRef.current?.snapToIndex(1);
   }
 
+ 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log(
-      "🚀 ~ file: BottomSheet.tsx:42 ~ handleSheetChanges ~ index:",
-      index
-    );
-
+  
     if (index === -1) {
       dispatch(closeModal());
-      setIsOpen(false)
     }
 
-    if (index>0){
-      setIsOpen(true)
-    }
+   
+   
   }, []);
 
   if (ModalState.isOpen === false) {
@@ -93,6 +93,7 @@ export const BottomSheetContainer = ({
 
   return (
     <>
+      
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
           {children}
@@ -101,13 +102,13 @@ export const BottomSheetContainer = ({
 
           <BottomSheet
             ref={sheetRef}
-            animationConfigs={{ duration: 200,}}
+            animationConfigs={{ duration: 400 }}
             handleIndicatorStyle={{ display: "none" }}
             index={-1}
             android_keyboardInputMode="adjustResize"
             keyboardBehavior="fillParent"
             enablePanDownToClose
-            snapPoints={snapPoints}
+            snapPoints={ModalState.id ? snapPointsForEdit : snapPointsForAdd}
             backgroundComponent={CustomBackground}
             backdropComponent={renderBackdrop}
             onChange={handleSheetChanges}
@@ -115,6 +116,7 @@ export const BottomSheetContainer = ({
             <BottomSheetView
               style={[
                 styles.contentScreen,
+                
                 { backgroundColor: isDarkTheme ? "#161b22" : "white" },
               ]}
             >
@@ -138,11 +140,11 @@ export const BottomSheetContainer = ({
                 }}
               >
                 {/* <AnimatedViewBottomSheet isVisible={isOpen}> */}
-                  {ModalState.id ? (
-                    <EditComponent />
-                  ) : !ModalState.id && ModalState.isOpen ? (
-                    <AddComponent />
-                  ) : null}
+                {ModalState.id ? (
+                  <EditComponent />
+                ) : !ModalState.id && ModalState.isOpen ? (
+                  <AddComponent />
+                ) : null}
                 {/* </AnimatedViewBottomSheet> */}
               </View>
             </BottomSheetView>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet, KeyboardAvoidingView, useColorScheme } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../components/Auth/Input";
@@ -13,6 +13,9 @@ import {
 } from "../firebase/auth/withEmail";
 import Toast from "react-native-toast-message";
 import { LoginProp } from "../types/navigation";
+import auth from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
 export default function LoginScreen({ navigation }: LoginProp) {
   const [input, setInput] = useState({
     email: {
@@ -24,13 +27,32 @@ export default function LoginScreen({ navigation }: LoginProp) {
       isValid: true,
     },
   });
-  const [loading, setIsloading] = useState(false);
+  GoogleSignin.configure({
+    webClientId:
+      "559944022438-qevaflis2kt49k97ppt675amonnmsn2l.apps.googleusercontent.com",
+  });
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
 
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  const [loading, setIsloading] = useState(false);
+  const [googleLoading, setIsGoogleLoading] = useState(false);
+  const theme = useColorScheme();
+  const isDarkTheme = theme === "dark";
   const validateEmail = (text: string) => {
-    console.log(text);
+    //console.log(text);
 
     if (!validator.isEmail(text)) {
-      console.log("Email is Not Correct");
+      //console.log("Email is Not Correct");
       setInput((prev) => {
         return { ...prev, email: { value: text, isValid: false } };
       });
@@ -40,12 +62,12 @@ export default function LoginScreen({ navigation }: LoginProp) {
         return { ...prev, email: { value: text, isValid: true } };
       });
 
-      console.log("Email is Correct");
+      //console.log("Email is Correct");
     }
   };
 
   const handlePassword = (text: string) => {
-    console.log(text);
+    //console.log(text);
 
     setInput((prev) => {
       return { ...prev, password: { value: text, isValid: true } };
@@ -56,17 +78,11 @@ export default function LoginScreen({ navigation }: LoginProp) {
     setIsloading(true);
     loginWithEmail(input.email.value, input.password.value)
       .then((response) => {
-        console.log(
-          "🚀 ~ file: LoginScreen.tsx:58 ~ .then ~ response:",
-          response
-        );
+    
       })
       .catch((e: any) => {
-        console.log(typeof e);
-        console.log(
-          "🚀 ~ file: LoginScreen.tsx:62 ~ submitHandler ~ e:",
-          e.code
-        );
+        //console.log(typeof e);
+      
         if (e.code === "auth/too-many-requests") {
           Toast.show({
             type: "loginToast",
@@ -173,13 +189,16 @@ export default function LoginScreen({ navigation }: LoginProp) {
           </View>
           <Button
             mode="contained"
+            loading= {googleLoading}
             labelStyle={{
               fontFamily: "JakaraSemiBold",
               includeFontPadding: false,
+              color: isDarkTheme ? "white" : "black"
             }}
             textColor="black"
             onPress={() => {
-              console.log("pressed");
+              setTimeout(()=>{ setIsGoogleLoading(true)}, 100)
+              onGoogleButtonPress().then(() => setIsGoogleLoading(false)).catch(()=>{ setIsGoogleLoading(false)});
             }}
             icon={({ size, color }) => (
               <GoogleICon size={size + 5} color={color} />
@@ -187,7 +206,7 @@ export default function LoginScreen({ navigation }: LoginProp) {
             style={{
               height: 50,
               borderRadius: 10,
-              backgroundColor: "#FDF5FF",
+              backgroundColor: isDarkTheme? "#33193A" :"#FDF5FF",
               borderWidth: 0.5,
 
               borderColor: "#F7D9FF",

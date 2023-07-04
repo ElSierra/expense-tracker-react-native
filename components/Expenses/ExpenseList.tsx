@@ -17,8 +17,10 @@ import auth from "@react-native-firebase/auth";
 export default function ExpenseList({
   expenses,
   ListHeaderComponent,
+  periodName,
 }: {
   expenses: Expenses[];
+  periodName: string;
   ListHeaderComponent?: JSX.Element;
 }) {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -38,7 +40,7 @@ export default function ExpenseList({
       const expenses = await firestore()
         .collection("expenses")
         .doc(auth().currentUser?.uid)
-        .collection("data")
+        .collection(new Date().getFullYear().toString())
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((documentSnapshot) => {
@@ -53,10 +55,7 @@ export default function ExpenseList({
           });
         });
 
-      console.log(
-        "🚀 ~ file: ExpenseList.tsx:31 ~ getExpenses ~ expenseList:",
-        expenseList
-      );
+      
 
       dispatch(setExpense(expenseList));
     }
@@ -76,7 +75,7 @@ export default function ExpenseList({
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ListContainer expense={item} />}
+        renderItem={({ item }) => <ListContainer    periodName={periodName} expense={item} />}
       />
     </View>
   );

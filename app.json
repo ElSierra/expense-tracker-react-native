@@ -18,6 +18,7 @@
     },
     "assetBundlePatterns": ["**/*", "assets/images"],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
       "bundleIdentifier": "me.hojoisaac.expense"
     },
@@ -29,6 +30,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "me.hojoisaac.expense"
     },
     "web": {
@@ -38,6 +40,7 @@
       "eas": {
         "projectId": "424a58d9-4486-45bb-9b2f-55d61e2db2d7"
       }
-    }
+    },
+    "plugins": ["@react-native-google-signin/google-signin"]
   }
 }
