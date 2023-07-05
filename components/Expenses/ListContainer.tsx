@@ -79,7 +79,7 @@ export default function ListContainer({
                 {trimExpName()}
               </Text>
               <Text style={styles.textFoot}>
-                {periodName != new Date().getFullYear().toString()
+                {periodName != `📅 ${new Date().getFullYear().toString()}`
                   ? getFormatDate(expense.date)
                   : getFormatDateAll(expense.date)}
               </Text>
