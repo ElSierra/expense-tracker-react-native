@@ -23,12 +23,15 @@ type ExpenseDataState = {
 const expenseSlice = createSlice({
   name: "expense",
   initialState: {
-    expenses: EXPENSE_DATA,
+    expenses: [],
   } as ExpenseState,
   reducers: {
     addExpense: (state, action: PayloadAction<ExpenseDataState>) => {
       const expense = { ...action.payload};
       state.expenses.push(expense);
+    },
+    resetExpense : (state)=>{
+      state.expenses = []
     },
     setExpense: (state, action: PayloadAction<ExpenseDataState[]>) => {
       state.expenses = action.payload;
@@ -63,6 +66,6 @@ const expenseSlice = createSlice({
   },
 });
 
-export const { addExpense, deleteExpense, updateExpense, doNothing, setExpense } =
+export const { addExpense,resetExpense, deleteExpense, updateExpense, doNothing, setExpense } =
   expenseSlice.actions;
 export default expenseSlice.reducer;

@@ -55,6 +55,7 @@ if (!validator.isStrongPassword(text)){
   setInput((prev) => {
     return { ...prev, password: { value: text, isValid: false } };
   });
+  return false;
 }
     setInput((prev) => {
       return { ...prev, password: { value: text, isValid: true } };

@@ -21,8 +21,11 @@ import auth from "@react-native-firebase/auth";
 
 import Toast from "react-native-toast-message";
 import { ProfileIcon } from "../icons";
+import { useAppDispatch } from "../../redux/hooks/hooks";
+import { openBlurModal } from "../../redux/slice/blurModalSlice";
 
 export default function ProfileComponent() {
+  const dispatch = useAppDispatch();
   const [pic, setPic] = useState(() => auth().currentUser?.photoURL);
   const [name, setName] = useState(() => auth().currentUser?.displayName);
   const [uploadValue, setUploadValue] = useState(0);
@@ -82,11 +85,21 @@ export default function ProfileComponent() {
             overflow: "hidden",
           }}
         >
-          <TouchableRipple onPress={onPickImage}>
+          <TouchableRipple
+            onPress={onPickImage}
+            style={{
+              backgroundColor: "#FFFFFF86",
+              borderRadius: 1000,
+              height: 100,
+              width: 100,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             {pic ? (
               <Image
                 source={pic}
-                style={{ height: 100, width: 100, borderRadius: 1000 }}
+                style={{ height: 90, width: 90, borderRadius: 1000 }}
               />
             ) : (
               <ProfileIcon size={100} color={isDarkTheme ? "white" : "black"} />
@@ -140,40 +153,71 @@ export default function ProfileComponent() {
           marginVertical: 20,
         }}
       >
-        <Button
-          loading={isLoading}
-          labelStyle={{
-            fontFamily: "JakaraExtraBold",
-          }}
-          contentStyle={{
-            height: 60,
-          }}
-          style={{
-            height: 60,
-
-            bottom: 0,
-            left: 0,
-            marginHorizontal: 60,
-            right: 0,
-
-            borderRadius: 20,
-          }}
-          mode="contained"
-          onPress={() => {
-            setIsLoading(true);
-            auth()
-              .currentUser?.updateProfile({ displayName: name })
-              .then((e) => {
-                setIsLoading(false);
-                Toast.show({
-                  text1: "Successfully updated",
-                  type: "successToast",
-                });
-              });
-          }}
+        <View
+          style={{ flexDirection: "row", justifyContent: "center", gap: 10 }}
         >
-          Update Profile
-        </Button>
+          <Button
+            loading={isLoading}
+            labelStyle={{
+              fontFamily: "JakaraExtraBold",
+            }}
+            contentStyle={{
+              height: 60,
+            }}
+            style={{
+              height: 60,
+
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: "#12B76A",
+
+              borderRadius: 10,
+            }}
+            mode="contained"
+            onPress={() => {
+              setIsLoading(true);
+              auth()
+                .currentUser?.updateProfile({ displayName: name })
+                .then((e) => {
+                  setIsLoading(false);
+                  Toast.show({
+                    text1: "Successfully updated",
+                    type: "successToast",
+                  });
+                });
+            }}
+          >
+            Update Profile
+          </Button>
+          <Button
+            loading={isLoading}
+            labelStyle={{
+              fontFamily: "JakaraExtraBold",
+              color: "#F04438",
+            }}
+            contentStyle={{
+              height: 60,
+            }}
+            style={{
+              borderColor: "#F04438",
+              height: 60,
+
+              bottom: 0,
+              left: 0,
+
+              right: 0,
+
+              borderRadius: 10,
+            }}
+            mode="outlined"
+            onPress={() => {
+              dispatch(openBlurModal());
+            }}
+          >
+            Delete All
+          </Button>
+        </View>
       </View>
     </View>
   );

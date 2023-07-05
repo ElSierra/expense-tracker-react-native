@@ -25,7 +25,7 @@ export default function EditButtons({
     firestore()
       .collection("expenses")
       .doc(auth().currentUser?.uid)
-      .collection("data")
+      .collection(new Date().getFullYear().toString())
       .doc(modalState.id || "")
       .delete()
       .then(() => {

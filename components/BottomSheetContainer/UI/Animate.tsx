@@ -45,5 +45,5 @@ export const AnimatedView = ({
     opacity: animation,
   };
 
-  return <Animated.View style={[animatedStyle]}>{children}</Animated.View>;
+  return <Animated.View style={[animatedStyle, style]}>{children}</Animated.View>;
 };

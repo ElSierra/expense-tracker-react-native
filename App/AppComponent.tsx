@@ -8,7 +8,7 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AllExpenses from "../screens/AllExpenses";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { DarkTheme, NavigationContainer } from "@react-navigation/native";
 import Home from "../screens/Home";
 import AddNewExpenseButton from "../components/UI/AddNewExpenseButton";
 import {
@@ -19,12 +19,12 @@ import {
   ProfileIcon,
 } from "../components/icons";
 import { BottomSheetContainer } from "../components/BottomSheet/BottomSheet";
-import { useCallback, useRef } from "react";
-import BottomSheet, { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { openModalAdd } from "../redux/slice/modalSlice";
-import { Avatar, TouchableRipple } from "react-native-paper";
+import { TouchableRipple } from "react-native-paper";
 import { FadeInView } from "../components/FadeInView";
 import Profile from "../screens/Profile";
 import { useAppSelector } from "../redux/hooks/hooks";
@@ -38,10 +38,12 @@ import {
   RootStackParamList,
 } from "../types/navigation";
 import IconButton from "../components/UI/IconButton";
-import BottomSheetScreen from "../screens/BottomSheetScreen";
+
 import { StatusBar } from "expo-status-bar";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/UI/CustomToastConfig";
+
+import BlurComponent from "../components/blurView/blurComponent";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 // const Tab = createBottomTabNavigator();
 
@@ -120,13 +122,16 @@ const signout = () => {
 };
 export default function App() {
   const dispatch = useAppDispatch();
+  const blurModal = useAppSelector((state) => state.blurModal);
 
   const { width, height } = Dimensions.get("window");
   const theme = useColorScheme();
 
   const isDarkTheme = theme === "dark";
 
-  console.log(auth().currentUser?.photoURL)
+
+
+
   return (
     <>
       <StatusBar
@@ -137,6 +142,7 @@ export default function App() {
       <View style={{ position: "absolute", width: "100%", zIndex: 999 }}>
         <Toast config={toastConfig} />
       </View>
+     <BlurComponent/>
       <BottomSheetModalProvider>
         <BottomSheetContainer>
           {/* {<BottomSheetScreen/>} */}
@@ -183,7 +189,10 @@ export default function App() {
                               style={{ height: 48, width: 48 }}
                             />
                           ) : (
-                            <ProfileIcon size={48} color={isDarkTheme ? "white": "black"} />
+                            <ProfileIcon
+                              size={48}
+                              color={isDarkTheme ? "white" : "black"}
+                            />
                           )}
                         </TouchableRipple>
                       </FadeInView>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, useColorScheme } from "react-native";
+import { View, Text, StyleSheet, KeyboardAvoidingView, useColorScheme, Pressable } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputComponent from "../components/Auth/Input";
@@ -116,6 +116,7 @@ export default function LoginScreen({ navigation }: LoginProp) {
               styles={{
                 borderColor: input.email.isValid ? "#E4E3E3" : "red",
                 borderWidth: 1.5,
+                
               }}
               options={{
                 autoCapitalize: "none",
@@ -139,15 +140,17 @@ export default function LoginScreen({ navigation }: LoginProp) {
                 borderWidth: 1.5,
               }}
             />
+            <Pressable onPress={()=>navigation.navigate('Reset')}>
             <Text
               style={{
+                color: isDarkTheme? "white": "black",
                 fontFamily: "JakaraSemiBold",
                 textDecorationLine: "underline",
                 textAlign: "right",
               }}
             >
               Forgot Password?
-            </Text>
+            </Text></Pressable>
             <Button
               mode="contained"
               loading={loading}

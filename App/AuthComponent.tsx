@@ -39,22 +39,18 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/UI/CustomToastConfig";
 import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
-
-
-
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 
 const Stack = createNativeStackNavigator<RootStackAuthParamList>();
 // const Tab = createBottomTabNavigator();
-
 
 export default function AuthComponent() {
   const dispatch = useAppDispatch();
 
   const { width, height } = Dimensions.get("window");
   const theme = useColorScheme();
- 
+
   const isDarkTheme = theme === "dark";
   return (
     <>
@@ -114,6 +110,20 @@ export default function AuthComponent() {
                   };
                 }}
                 component={SignupScreen}
+              />
+              <Stack.Screen
+                name="Reset"
+                options={{
+                  animation: "fade",
+                  animationDuration: 1,
+                  headerShadowVisible: false,
+                  headerShown: false,
+                  headerTitleAlign: "center",
+                  headerTintColor: isDarkTheme ? "white" : "black",
+                  headerBackVisible: false,
+                  headerTransparent: true,
+                }}
+                component={ResetPasswordScreen}
               />
             </Stack.Navigator>
           </ImageBackground>

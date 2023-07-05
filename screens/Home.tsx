@@ -101,7 +101,7 @@ export default function Home() {
           totalSpent={formattedExpenseSum.split(".")[0]}
         />
       </View>
-      <View style={styles.root}>
+      <View style={styles.sec}>
         <ExpenseComponent expenses={sortedExpense} periodName="📅 This week" />
       </View>
     </FadeInView>
@@ -112,6 +112,10 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     marginTop: 40,
+  },
+  sec:{
+    flex: 1,
+    marginTop:10
   },
   moneyContainer: {
     alignItems: "center",

@@ -27,7 +27,11 @@ export default function InputComponent({
       style={[
         style.input,
         styles,
-        { backgroundColor: isDarkTheme ? "#161b22" : "white" },
+
+        {
+          backgroundColor: isDarkTheme ? "#161b22" : "white",
+          color: isDarkTheme ? "white" : "black",
+        },
       ]}
       placeholderTextColor={isDarkTheme ? "#E2E2E2" : "grey"}
       placeholder={placeholder}
