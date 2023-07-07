@@ -55,8 +55,6 @@ export default function ExpenseList({
           });
         });
 
-      
-
       dispatch(setExpense(expenseList));
     }
     getExpenses();
@@ -65,17 +63,25 @@ export default function ExpenseList({
   return (
     <View style={{ flex: 1 }}>
       <FlashList
-        estimatedItemSize={80}
+        decelerationRate={"fast"}
+        fadingEdgeLength={60}
+        estimatedItemSize={200}
         data={memoExpense}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         stickyHeaderHiddenOnScroll
         ListHeaderComponent={ListHeaderComponent}
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={
+          periodName === `📅 ${new Date().getFullYear().toString()}`
+            ? true
+            : false
+        }
         contentContainerStyle={{ paddingBottom: 20 }}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ListContainer    periodName={periodName} expense={item} />}
+        renderItem={({ item }) => (
+          <ListContainer periodName={periodName} expense={item} />
+        )}
       />
     </View>
   );

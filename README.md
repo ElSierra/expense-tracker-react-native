@@ -11,7 +11,7 @@ Expense Tracker is a mobile application built with React Native that helps you k
 3. Redux Toolkit
 4. Others
 
-## Tested on Samsung S22+
+## Tested on Samsung S22+ only
 
 ## Screenshots
 
@@ -21,7 +21,7 @@ Expense Tracker is a mobile application built with React Native that helps you k
 
 1. Clone the repository.
 2. Run `npm install` to install the dependencies.
-3. Run `npm start` to start the app.
+3. Run `npm run android` to start the app.
 
 ## Usage
 
